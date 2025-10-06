@@ -17,7 +17,7 @@ aux_links:
 search_enabled: true
 
 # Footer
-footer_content: "&copy; #{Time.now.year} Kaysharp. MapVoter Plugin Documentation."
+footer_content: "&copy; 2025 Kaysharp. Documentation Hub."
 
 # Keep legacy HTML guide for backward-compatible links (old URLs under /MapVoter/)
 # Once search engines & external links updated, you can delete MapVoter/ folder.

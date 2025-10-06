@@ -1,9 +1,12 @@
 ---
 layout: default
-title: Auto Wipe & Voting Logic
-nav_order: 5
+title: Auto Wipe & Voting
+parent: MapVoter
+nav_order: 4
 ---
+
 # Auto Wipe & Voting Logic
+{: .no_toc }
 
 ## Concepts
 - Forced Wipe: First Thursday each month (Facepunch)

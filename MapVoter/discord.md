@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Discord Integration
-nav_order: 6
+parent: MapVoter
+nav_order: 5
 ---
+
 # Discord Integration
+{: .no_toc }
 
 ## Setup Steps
 1. Create application + bot in Developer Portal

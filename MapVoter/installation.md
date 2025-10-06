@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Installation
-nav_order: 2
+parent: MapVoter
+nav_order: 1
 ---
+
 # Installation
+{: .no_toc }
 
 Follow these steps to install the MapVoter plugin on your Rust server.
 

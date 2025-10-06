@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Commands
-nav_order: 4
+parent: MapVoter
+nav_order: 3
 ---
+
 # Commands Reference
+{: .no_toc }
 
 ## Player Chat Commands
 | Command | Description |

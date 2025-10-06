@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Changelog
+parent: MapVoter
 nav_order: 50
 ---
+
 # Changelog
+{: .no_toc }
 
 ## 1.7.0 - UI Refactoring Update
 - NEW Theme system (colors, spacing, typography, effects)

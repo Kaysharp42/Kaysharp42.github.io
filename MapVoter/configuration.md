@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Configuration
-nav_order: 3
+parent: MapVoter
+nav_order: 2
 ---
+
 # Configuration
+{: .no_toc }
 
 This page documents all configuration sections for MapVoter. The actual JSON file lives at:
 ```
