@@ -1,0 +1,34 @@
+title: Project Documentation Hub
+description: Documentation portal for MapVoter and future projects
+url: "https://kaysharp42.github.io"
+baseurl: "" # remain root for multi-project hub
+
+# Theme (using Just the Docs via remote theme)
+remote_theme: just-the-docs/just-the-docs
+color_scheme: dark
+
+# Aux links (top right)
+aux_links:
+  MapVoter on Codefling: https://codefling.com/plugins/map-voter-and-auto-wipe-script
+  Repository: https://github.com/Kaysharp42/Kaysharp42.github.io
+
+# Navigation structure (order defined by nav_order front matter in pages)
+# Enable search
+search_enabled: true
+
+# Footer
+footer_content: "&copy; #{Time.now.year} Kaysharp. MapVoter Plugin Documentation."
+
+# Keep legacy HTML guide for backward-compatible links (old URLs under /MapVoter/)
+# Once search engines & external links updated, you can delete MapVoter/ folder.
+
+# Just the Docs configuration
+just_the_docs:
+  logo: 
+  favicon_ico: 
+
+# Collections (optional future: versions, guides)
+# collections:
+#   guides:
+#     output: true
+#     permalink: /:collection/:path/
