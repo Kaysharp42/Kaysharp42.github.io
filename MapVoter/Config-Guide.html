@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MapVoter Configuration Guide</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #e6edf3;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            background: #0d1117;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            color: #e6edf3;
+            scroll-margin-top: 70px;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #30363d; padding-bottom: .3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #30363d; padding-bottom: .3em; }
+        h3 { font-size: 1.25em; }
+        h4 { font-size: 1em; }
+        code {
+            background-color: rgba(110,118,129,0.15);
+            border-radius: 3px;
+            font-size: 85%;
+            margin: 0;
+            padding: .2em .4em;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            color: #e6edf3;
+        }
+        pre {
+            background-color: #161b22;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+            overflow: auto;
+            padding: 16px;
+            border: 1px solid #30363d;
+        }
+        pre code {
+            background-color: transparent;
+            border: 0;
+            display: inline;
+            line-height: inherit;
+            margin: 0;
+            overflow: visible;
+            padding: 0;
+            word-wrap: normal;
+            color: #e6edf3;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        table th, table td {
+            border: 1px solid #30363d;
+            padding: 6px 13px;
+            color: #e6edf3;
+        }
+        table th {
+            background-color: #161b22;
+            font-weight: 600;
+        }
+        table tr:nth-child(2n) {
+            background-color: #0d1117;
+        }
+        a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            border-left: .25em solid #30363d;
+            color: #8b949e;
+            padding: 0 1em;
+            margin: 0 0 16px 0;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #30363d;
+            height: .25em;
+            margin: 24px 0;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        li + li {
+            margin-top: .25em;
+        }
+        img {
+            max-width: 100%;
+            box-sizing: content-box;
+        }
+        .emoji {
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            vertical-align: text-bottom;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Wipe Schedule Picker Styles */
+        .wipe-picker-container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+        
+        .picker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .picker-title {
+            font-size: 1.25em;
+            font-weight: 600;
+            color: #58a6ff;
+        }
+        
+        .preset-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .preset-btn {
+            background: #21262d;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .preset-btn:hover {
+            background: #30363d;
+            border-color: #58a6ff;
+        }
+        
+        .preset-btn.active {
+            background: #58a6ff;
+            color: #0d1117;
+            border-color: #58a6ff;
+        }
+        
+        .calendar-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+        
+        .calendar-header {
+            text-align: center;
+            font-weight: 600;
+            color: #8b949e;
+            padding: 8px;
+            font-size: 12px;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #0d1117;
+            border: 2px solid #30363d;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            min-height: 60px;
+        }
+        
+        .calendar-day:hover:not(.forced-wipe):not(.empty) {
+            border-color: #58a6ff;
+            transform: translateY(-2px);
+        }
+        
+        .calendar-day.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+        }
+        
+        .calendar-day.forced-wipe {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+            cursor: default;
+        }
+        
+        .calendar-day.selected-map {
+            background: #238636;
+            border-color: #2ea043;
+        }
+        
+        .calendar-day.selected-map:hover {
+            background: #2ea043;
+        }
+        
+        .calendar-day.selected-bp {
+            background: #1f6feb;
+            border-color: #58a6ff;
+        }
+        
+        .calendar-day.selected-bp:hover {
+            background: #58a6ff;
+        }
+        
+        .calendar-day.selected-both {
+            background: linear-gradient(135deg, #238636 0%, #238636 50%, #1f6feb 50%, #1f6feb 100%);
+            border-color: #fbbf24;
+            border-width: 3px;
+        }
+        
+        .calendar-day.selected-both:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+        
+        .day-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e6edf3;
+        }
+        
+        .day-label {
+            font-size: 10px;
+            color: #8b949e;
+            margin-top: 2px;
+        }
+        
+        .calendar-day.forced-wipe .day-label,
+        .calendar-day.selected .day-label {
+            color: #ffffff;
+        }
+        
+        .output-section {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+        
+        .output-title {
+            font-weight: 600;
+            color: #58a6ff;
+            margin-bottom: 12px;
+        }
+        
+        .output-code {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 13px;
+            color: #e6edf3;
+            overflow-x: auto;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+        
+        .legend-box.forced {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+        
+        .legend-box.wipe {
+            background: #238636;
+            border-color: #2ea043;
+        }
+        
+        .legend-box.empty {
+            background: #0d1117;
+            border-color: #30363d;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div id="content">Loading...</div>
+    <script>
+        // Custom heading renderer to generate proper IDs
+        const renderer = new marked.Renderer();
+        
+        renderer.heading = function({ text, depth }) {
+            // Generate ID from text by converting to lowercase and replacing spaces with hyphens
+            // Strip HTML tags from text first
+            const cleanText = text.replace(/<[^>]*>/g, '');
+            const id = cleanText
+                .toLowerCase()
+                .replace(/[^\w\s-]/g, '') // Remove special characters except spaces and hyphens
+                .trim()
+                .replace(/\s+/g, '-') // Replace spaces with hyphens
+                .replace(/--+/g, '-'); // Replace multiple hyphens with single hyphen
+            
+            return `<h${depth} id="${id}">${text}</h${depth}>\n`;
+        };
+        
+        // Configure marked to use GitHub-flavored markdown with custom renderer
+        marked.setOptions({
+            renderer: renderer,
+            headerIds: false,
+            mangle: false,
+            gfm: true
+        });
+        
+        // Markdown content is stored as JSON to handle escaping properly
+        const markdownContent = "# MapVoter Configuration Guide\r\n\r\n**Plugin Version**: 1.7.0  \r\n**Config Version**: 2.0.0  \r\n**Last Updated**: October 6, 2025\r\n\r\n🛒 **[Purchase MapVoter Plugin on Codefling](https://codefling.com/plugins/map-voter-and-auto-wipe-script)**\r\n\r\n---\r\n\r\n## Table of Contents\r\n\r\n1. [Overview](#overview)\r\n2. [Quick Start](#quick-start)\r\n3. [Commands Reference](#commands-reference)\r\n   - [In-Game Commands](#in-game-commands)\r\n   - [Discord Commands](#discord-commands-1)\r\n4. [Configuration Sections](#configuration-sections)\r\n   - [Config Version](#config-version)\r\n   - [UI Theme System](#ui-theme-system)\r\n   - [Commands](#commands)\r\n   - [Rewards](#rewards)\r\n   - [Fun Kit](#fun-kit)\r\n   - [Options](#options)\r\n   - [RustMaps Settings](#rustmaps-settings)\r\n   - [Discord Settings](#discord-settings)\r\n   - [Auto Vote](#auto-vote)\r\n   - [Auto Wipe](#auto-wipe)\r\n   - [Plugins Data Wipe](#plugins-data-wipe)\r\n5. [Common Scenarios](#common-scenarios)\r\n6. [Wipe Schedule Calculator](#wipe-schedule-calculator)\r\n7. [Voting Timeline Explained](#voting-timeline-explained)\r\n8. [Server Identity Explained](#server-identity-explained)\r\n9. [Troubleshooting](#troubleshooting)\r\n\r\n---\r\n\r\n## Overview\r\n\r\nMapVoter is a comprehensive Rust server plugin that automates map voting, wipe scheduling, and Discord integration. This guide explains every configuration option in detail.\r\n\r\n**Key Features:**\r\n- 🗳️ Automated map voting system (in-game UI + Discord bot)\r\n- 🗺️ RustMaps.com API integration for procedural and custom maps\r\n- ⏰ Flexible wipe scheduling (weekly, bi-weekly, monthly, custom)\r\n- 🤖 Full Discord bot integration with voting, commands, and notifications\r\n- 🎁 Reward system for voters (ServerRewards points, Kits)\r\n- 🧹 Automatic plugin data cleanup on wipe\r\n- 🎉 Fun Kit system for pre-wipe events\r\n\r\n---\r\n\r\n## Quick Start\r\n\r\n### Minimum Required Configuration\r\n\r\n```json\r\n{\r\n  \"Config Version\": \"2.0.0\",\r\n  \"RustMaps Settings\": {\r\n    \"Map size\": 3500,\r\n    \"RustMaps API key\": \"YOUR_API_KEY_HERE\",\r\n    \"RustMaps ORG ID\": \"YOUR_ORG_ID_HERE\"\r\n  },\r\n  \"Auto Wipe\": {\r\n    \"Enable Auto Wipe (true/false)\": true,\r\n    \"Map Wipe schedule\": [7, 14, 21, 28],\r\n    \"BP Wipe schedule\": [0],\r\n    \"Wipe time (HH:mm) 24-hour clock\": \"19:00\"\r\n  }\r\n}\r\n```\r\n\r\n**Get Your API Key & ORG ID:**\r\n1. Visit https://rustmaps.com/user/profile\r\n2. Copy your API Key and Organization ID\r\n3. Paste them into the config\r\n\r\n---\r\n\r\n## Commands Reference\r\n\r\nMapVoter provides both in-game console commands and Discord bot commands for managing voting and wipe operations.\r\n\r\n### In-Game Commands\r\n\r\n#### Player Commands\r\n\r\n| Command | Description | Permission Required |\r\n|---------|-------------|--------------------|\r\n| `/mvote` | Opens the MapVoter voting UI | None (or `mapvoter.vote` if restricted) |\r\n| `/voteresult` | Shows current voting results and standings | None |\r\n\r\n#### Admin Commands - Voting\r\n\r\n| Command | Syntax | Description | Example |\r\n|---------|--------|-------------|--------|\r\n| `/startvote` | `/startvote` | Starts voting after selecting which maps appear on the ballot | `/startvote` |\r\n| `MapVoter.generate` | `MapVoter.generate <number> <seed> <duration>` | Generates map options for voting | `MapVoter.generate 5 12345 60` |\r\n| `MapVoter.stopvoting` | `MapVoter.stopvoting` | Stops the current voting session immediately | `MapVoter.stopvoting` |\r\n\r\n**MapVoter.generate Parameters:**\r\n- `<number>` - Number of maps to generate (1-10 recommended)\r\n- `<seed>` - Map seed (use 0 for random)\r\n- `<duration>` - Voting duration in minutes\r\n\r\n**Example**:\r\n```\r\nMapVoter.generate 5 0 60\r\n```\r\n*Generates 5 random maps with 60-minute voting duration*\r\n\r\n---\r\n\r\n#### Admin Commands - Map Wipe\r\n\r\n| Command | Syntax | Description | Example |\r\n|---------|--------|-------------|--------|\r\n| `MapVoter.mapwipe` | `MapVoter.mapwipe <delay> <size>` | Wipes map to procedural with specified size | `MapVoter.mapwipe 300 3500` |\r\n| `MapVoter.mapwipe` | `MapVoter.mapwipe <delay> <custom_url>` | Wipes map to custom map from URL | `MapVoter.mapwipe 300 https://example.com/map.map` |\r\n\r\n**Parameters:**\r\n- `<delay>` - Delay in seconds before wipe executes\r\n- `<size>` - Map size (1000-6000)\r\n- `<custom_url>` - Direct URL to `.map` file\r\n\r\n**What it does:**\r\n- Generates new map (procedural or downloads custom)\r\n- Updates `server.cfg` startup parameters\r\n- Wipes map data\r\n- Restarts server with new map\r\n\r\n**Examples**:\r\n```\r\nMapVoter.mapwipe 300 3500\r\n```\r\n*Wipes to 3500 size procedural map after 5 minutes*\r\n\r\n```\r\nMapVoter.mapwipe 60 https://rustmaps.com/download/123456\r\n```\r\n*Wipes to custom map after 1 minute*\r\n\r\n---\r\n\r\n#### Admin Commands - Blueprint Wipe\r\n\r\n| Command | Syntax | Description | Example |\r\n|---------|--------|-------------|--------|\r\n| `MapVoter.bpwipe` | `MapVoter.bpwipe <delay> <size>` | Full wipe (map + blueprints) with procedural map | `MapVoter.bpwipe 300 3500` |\r\n| `MapVoter.bpwipe` | `MapVoter.bpwipe <delay> <custom_url>` | Full wipe (map + blueprints) with custom map | `MapVoter.bpwipe 300 https://example.com/map.map` |\r\n\r\n**Parameters:**\r\n- `<delay>` - Delay in seconds before wipe executes\r\n- `<size>` - Map size (1000-6000)\r\n- `<custom_url>` - Direct URL to `.map` file\r\n\r\n**What it does:**\r\n- Generates new map (procedural or downloads custom)\r\n- Deletes blueprint/player data files:\r\n  - `*.db` (player data)\r\n  - `*.db-journal` (database journals)\r\n  - `*.sav` (save files)\r\n- Updates `server.cfg` startup parameters\r\n- Restarts server with fresh map and reset blueprints\r\n\r\n**Examples**:\r\n```\r\nMapVoter.bpwipe 600 4000\r\n```\r\n*Full wipe to 4000 size map after 10 minutes*\r\n\r\n```\r\nMapVoter.bpwipe 120 https://rustmaps.com/download/789012\r\n```\r\n*Full wipe to custom map after 2 minutes*\r\n\r\n---\r\n\r\n#### Admin Commands - Wipe Management\r\n\r\n| Command | Description | Example |\r\n|---------|-------------|--------|\r\n| `MapVoter.cancelwipe` | Cancels any scheduled wipe (map or BP) | `MapVoter.cancelwipe` |\r\n\r\n---\r\n\r\n#### Admin Commands - Server Updates\r\n\r\n| Command | Syntax | Description | Example |\r\n|---------|--------|-------------|--------|\r\n| `MapVoter.update` | `MapVoter.update <delay>` | Updates server and Oxide, then restarts | `MapVoter.update 300` |\r\n| `MapVoter.CancelUpdate` | `MapVoter.CancelUpdate` | Cancels scheduled update | `MapVoter.CancelUpdate` |\r\n\r\n**What MapVoter.update does:**\r\n1. Announces update to players\r\n2. Waits specified delay (in seconds)\r\n3. Updates Rust server files\r\n4. Updates Oxide framework\r\n5. Restarts server\r\n\r\n**Example**:\r\n```\r\nMapVoter.update 600\r\n```\r\n*Updates server after 10-minute warning*\r\n\r\n---\r\n\r\n#### Admin Commands - Plugin Management\r\n\r\n| Command | Description | Example |\r\n|---------|-------------|--------|\r\n| `MapVoter.reload` | Reloads the plugin and configuration | `MapVoter.reload` |\r\n\r\n---\r\n\r\n### Discord Commands\r\n\r\nAll Discord commands use the prefix defined in your config (default: `!`).\r\n\r\n#### Public Discord Commands\r\n\r\n| Command | Description | Example |\r\n|---------|-------------|--------|\r\n| `!vote` | Shows current voting results and map options in Discord | `!vote` |\r\n\r\n---\r\n\r\n#### Admin Discord Commands - Voting\r\n\r\n| Command | Syntax | Description | Example |\r\n|---------|--------|-------------|--------|\r\n| `!generate` | `!generate <number> <seed> <duration>` | Generates map options for voting | `!generate 5 0 60` |\r\n| `!stopvoting` | `!stopvoting` | Stops the current voting session | `!stopvoting` |\r\n\r\n---\r\n\r\n#### Admin Discord Commands - Map Wipe\r\n\r\n| Command | Syntax | Description | Example |\r\n|---------|--------|-------------|--------|\r\n| `!mapwipe` | `!mapwipe <delay> <size>` | Wipes map to procedural with specified size | `!mapwipe 300 3500` |\r\n| `!mapwipe` | `!mapwipe <delay> <custom_url>` | Wipes map to custom map from URL | `!mapwipe 300 https://example.com/map.map` |\r\n\r\n---\r\n\r\n#### Admin Discord Commands - Blueprint Wipe\r\n\r\n| Command | Syntax | Description | Example |\r\n|---------|--------|-------------|--------|\r\n| `!bpwipe` | `!bpwipe <delay> <size>` | Full wipe (map + blueprints) with procedural map | `!bpwipe 300 3500` |\r\n| `!bpwipe` | `!bpwipe <delay> <custom_url>` | Full wipe (map + blueprints) with custom map | `!bpwipe 300 https://example.com/map.map` |\r\n\r\n---\r\n\r\n#### Admin Discord Commands - Wipe Management\r\n\r\n| Command | Description | Example |\r\n|---------|-------------|--------|\r\n| `!cancelwipe` | Cancels any scheduled wipe | `!cancelwipe` |\r\n\r\n---\r\n\r\n#### Admin Discord Commands - Server Updates\r\n\r\n| Command | Syntax | Description | Example |\r\n|---------|--------|-------------|--------|\r\n| `!update` | `!update <delay>` | Updates server and Oxide, then restarts | `!update 300` |\r\n| `!cancelupdate` | `!cancelupdate` | Cancels scheduled update | `!cancelupdate` |\r\n\r\n---\r\n\r\n### Command Permissions\r\n\r\n#### In-Game Permissions\r\n\r\n| Permission | Description | Default |\r\n|------------|-------------|--------|\r\n| `mapvoter.vote` | Required to vote (if voting is restricted) | Not required by default |\r\n| `mapvoter.admin` | Required for all admin commands | Admin/moderator only |\r\n\r\n**Granting Permissions:**\r\n```\r\noxide.grant user <username> mapvoter.admin\r\noxide.grant group admin mapvoter.admin\r\n```\r\n\r\n#### Discord Permissions\r\n\r\nDiscord command permissions are configured in the plugin config under:\r\n```json\r\n\"Discord Command Role Assignment (Empty = All roles can use command.)\": {\r\n  \"generate\": [\"Admin\", \"Moderator\"],\r\n  \"mapwipe\": [\"Admin\"],\r\n  \"bpwipe\": [\"Admin\"],\r\n  \"update\": [\"Admin\"],\r\n  \"stopvoting\": [\"Admin\", \"Moderator\"],\r\n  \"cancelwipe\": [\"Admin\"],\r\n  \"cancelupdate\": [\"Admin\"]\r\n}\r\n```\r\n\r\n- Empty array `[]` = Everyone can use the command\r\n- Add Discord role names to restrict access\r\n- Role names are case-sensitive\r\n\r\n---\r\n\r\n### Common Command Workflows\r\n\r\n#### Starting a Manual Vote\r\n\r\n1. Generate maps: `MapVoter.generate 5 0 60`\r\n2. Select maps for voting in the UI\r\n3. Start vote: `/startvote`\r\n4. Players vote using `/mvote`\r\n5. Check results: `/voteresult` or `!vote`\r\n\r\n#### Emergency Map Wipe\r\n\r\n1. Announce wipe: Use Discord/in-game chat\r\n2. Execute wipe: `MapVoter.mapwipe 300 3500`\r\n3. Server wipes after 5 minutes\r\n4. Players reconnect to new map\r\n\r\n#### Scheduled Blueprint Wipe\r\n\r\n1. Announce BP wipe: Give players warning\r\n2. Execute BP wipe: `MapVoter.bpwipe 600 4000`\r\n3. Server wipes map + BPs after 10 minutes\r\n4. Fresh start for all players\r\n\r\n#### Server Update Process\r\n\r\n1. Check for Rust update\r\n2. Announce: \"Server updating in 10 minutes\"\r\n3. Execute: `MapVoter.update 600`\r\n4. Server updates and restarts automatically\r\n\r\n---\r\n\r\n## Configuration Sections\r\n\r\n### Config Version\r\n\r\n```json\r\n\"Config Version\": \"2.0.0\"\r\n```\r\n\r\n**Purpose**: Tracks the configuration structure version for future migrations.\r\n\r\n⚠️ **Do not modify this value manually.** The plugin uses this to automatically migrate old configurations.\r\n\r\n---\r\n\r\n### UI Theme System\r\n\r\n**New in Version 1.7.0** - Complete UI customization system for colors, spacing, typography, and effects.\r\n\r\n```json\r\n\"Theme\": {\r\n  \"Colors\": {\r\n    \"Primary\": \"#4a90e2\",\r\n    \"Secondary\": \"#5cb85c\",\r\n    \"Success\": \"#6a8b38\",\r\n    \"Warning\": \"#d08822\",\r\n    \"Error\": \"#d85540\",\r\n    \"Info\": \"#007acc\",\r\n    \"Background\": \"#232323\",\r\n    \"Surface\": \"#2a2a2a\",\r\n    \"TextPrimary\": \"#ffffff\",\r\n    \"TextSecondary\": \"#b0b0b0\",\r\n    \"Border\": \"#404040\",\r\n    \"Shadow\": \"#000000\",\r\n    \"Accent\": \"#ff6b35\"\r\n  },\r\n  \"Spacing\": {\r\n    \"Tiny\": 0.002,\r\n    \"Small\": 0.005,\r\n    \"Medium\": 0.01,\r\n    \"Large\": 0.02,\r\n    \"ExtraLarge\": 0.04\r\n  },\r\n  \"Typography\": {\r\n    \"TinySize\": 10,\r\n    \"SmallSize\": 12,\r\n    \"BodySize\": 14,\r\n    \"HeaderSize\": 16,\r\n    \"TitleSize\": 20\r\n  },\r\n  \"Effects\": {\r\n    \"EnableShadows\": false,\r\n    \"EnableGlow\": false,\r\n    \"EnableBlur\": true,\r\n    \"EnableAnimations\": false\r\n  }\r\n}\r\n```\r\n\r\n---\r\n\r\n#### Color Scheme\r\n\r\nThe color scheme defines all colors used throughout the MapVoter UI. All colors use hex format (`#RRGGBB`).\r\n\r\n| Color Property | Default | Usage | Examples |\r\n|----------------|---------|-------|----------|\r\n| **Primary** | `#4a90e2` (Blue) | Main action buttons, primary UI elements | Vote buttons, navigation |\r\n| **Secondary** | `#5cb85c` (Green) | Secondary actions, alternative buttons | Map selection, filters |\r\n| **Success** | `#6a8b38` (Green) | Success states, vote buttons, positive actions | \"Vote\" button, success notifications |\r\n| **Warning** | `#d08822` (Orange) | Warning states, editor labels, caution indicators | Editor field labels, warnings |\r\n| **Error** | `#d85540` (Red) | Error states, cancel buttons, delete actions | Close buttons, error notifications, voted state |\r\n| **Info** | `#007acc` (Blue) | Information displays, section separators | Editor section headers, info notifications |\r\n| **Background** | `#232323` (Dark Gray) | Main background panels | Menu backgrounds, card backgrounds |\r\n| **Surface** | `#2a2a2a` (Lighter Gray) | Card surfaces, elevated panels | Map cards, input fields |\r\n| **TextPrimary** | `#ffffff` (White) | Primary text, headings, important labels | Titles, button text, main content |\r\n| **TextSecondary** | `#b0b0b0` (Light Gray) | Secondary text, descriptions, less important labels | Subtitles, hints, metadata |\r\n| **Border** | `#404040` (Medium Gray) | Borders, dividers, outlines | Card borders, separators |\r\n| **Shadow** | `#000000` (Black) | Drop shadows, depth effects | Card shadows (when enabled) |\r\n| **Accent** | `#ff6b35` (Orange-Red) | Highlight colors, special indicators | Featured items, highlights |\r\n\r\n**Color Customization Tips:**\r\n- Use consistent saturation levels for a professional look\r\n- Maintain good contrast between text and backgrounds (WCAG AA: 4.5:1 minimum)\r\n- Test colors in-game at different times of day (Rust lighting affects UI visibility)\r\n- Keep Primary/Secondary distinct from Success/Error for clear visual hierarchy\r\n\r\n**Example Color Schemes:**\r\n\r\n**Dark Blue Theme:**\r\n```json\r\n\"Colors\": {\r\n  \"Primary\": \"#2563eb\",\r\n  \"Secondary\": \"#3b82f6\",\r\n  \"Success\": \"#10b981\",\r\n  \"Warning\": \"#f59e0b\",\r\n  \"Error\": \"#ef4444\",\r\n  \"Info\": \"#06b6d4\",\r\n  \"Background\": \"#1e293b\",\r\n  \"Surface\": \"#334155\",\r\n  \"TextPrimary\": \"#f1f5f9\",\r\n  \"TextSecondary\": \"#cbd5e1\",\r\n  \"Border\": \"#475569\",\r\n  \"Shadow\": \"#0f172a\",\r\n  \"Accent\": \"#8b5cf6\"\r\n}\r\n```\r\n\r\n**Light Mode (Experimental):**\r\n```json\r\n\"Colors\": {\r\n  \"Primary\": \"#2563eb\",\r\n  \"Secondary\": \"#16a34a\",\r\n  \"Success\": \"#22c55e\",\r\n  \"Warning\": \"#f97316\",\r\n  \"Error\": \"#dc2626\",\r\n  \"Info\": \"#0ea5e9\",\r\n  \"Background\": \"#f8fafc\",\r\n  \"Surface\": \"#ffffff\",\r\n  \"TextPrimary\": \"#0f172a\",\r\n  \"TextSecondary\": \"#64748b\",\r\n  \"Border\": \"#cbd5e1\",\r\n  \"Shadow\": \"#94a3b8\",\r\n  \"Accent\": \"#a855f7\"\r\n}\r\n```\r\n\r\n---\r\n\r\n#### Spacing System\r\n\r\nSpacing values control padding, margins, and gaps throughout the UI. Values are in normalized screen coordinates (0.0 to 1.0).\r\n\r\n| Spacing Property | Default | Pixel Equivalent (1920x1080) | Usage |\r\n|------------------|---------|------------------------------|-------|\r\n| **Tiny** | `0.002` | ~2px | Minimal gaps, fine adjustments |\r\n| **Small** | `0.005` | ~5px | Small padding, tight spacing |\r\n| **Medium** | `0.01` | ~10px | Standard padding, comfortable spacing |\r\n| **Large** | `0.02` | ~20px | Large gaps, section separation |\r\n| **ExtraLarge** | `0.04` | ~40px | Major sections, page margins |\r\n\r\n**Spacing Usage Examples:**\r\n- **Tiny**: Border thickness, small adjustments\r\n- **Small**: Button padding, card padding\r\n- **Medium**: Standard content margins\r\n- **Large**: Section gaps, header spacing\r\n- **ExtraLarge**: Page margins, major layout divisions\r\n\r\n**Responsive Spacing:**\r\nSpacing automatically scales with screen resolution. The pixel equivalents shown are approximate for 1920x1080 displays.\r\n\r\n---\r\n\r\n#### Typography System\r\n\r\nTypography controls font sizes throughout the UI. All values are in points (pt).\r\n\r\n| Typography Property | Default | Usage | Examples |\r\n|---------------------|---------|-------|----------|\r\n| **TinySize** | `10` | Very small text, metadata | Timestamps, version numbers |\r\n| **SmallSize** | `12` | Small text, labels, secondary content | Input field labels, vote counts, descriptions |\r\n| **BodySize** | `14` | Standard body text, buttons | Button text, content text, standard labels |\r\n| **HeaderSize** | `16` | Section headers, subsections | Panel headers, category titles |\r\n| **TitleSize** | `20` | Main titles, page headers | Menu title, main headings |\r\n\r\n**Typography Best Practices:**\r\n- Keep at least 2pt difference between adjacent sizes for clear hierarchy\r\n- Don't go below 10pt for readability (especially at 1080p or lower)\r\n- Test readability at your server's most common resolution\r\n- Consider players with visual impairments - larger is generally better\r\n\r\n**Custom Typography Examples:**\r\n\r\n**Larger Text (Accessibility):**\r\n```json\r\n\"Typography\": {\r\n  \"TinySize\": 12,\r\n  \"SmallSize\": 14,\r\n  \"BodySize\": 16,\r\n  \"HeaderSize\": 18,\r\n  \"TitleSize\": 22\r\n}\r\n```\r\n\r\n**Compact UI:**\r\n```json\r\n\"Typography\": {\r\n  \"TinySize\": 9,\r\n  \"SmallSize\": 11,\r\n  \"BodySize\": 13,\r\n  \"HeaderSize\": 15,\r\n  \"TitleSize\": 18\r\n}\r\n```\r\n\r\n---\r\n\r\n#### Visual Effects\r\n\r\nVisual effects control advanced UI features like shadows, glow, blur, and animations.\r\n\r\n| Effect Property | Default | Performance Impact | Description |\r\n|----------------|---------|-------------------|-------------|\r\n| **EnableShadows** | `false` | Low | Drop shadows on cards and panels for depth |\r\n| **EnableGlow** | `false` | Medium | Glow effects on highlighted elements |\r\n| **EnableBlur** | `true` | Medium | Background blur for better readability |\r\n| **EnableAnimations** | `false` | Low-Medium | Smooth transitions and animations |\r\n\r\n**Performance Considerations:**\r\n- **Shadows**: Minimal impact, safe to enable on most servers\r\n- **Glow**: Moderate impact, may affect performance on busy UIs\r\n- **Blur**: Moderate impact, recommended to keep enabled for readability\r\n- **Animations**: Low impact, mainly affects perceived performance\r\n\r\n**Effect Recommendations by Server Type:**\r\n\r\n**High-Performance Server (200+ FPS):**\r\n```json\r\n\"Effects\": {\r\n  \"EnableShadows\": true,\r\n  \"EnableGlow\": true,\r\n  \"EnableBlur\": true,\r\n  \"EnableAnimations\": true\r\n}\r\n```\r\n\r\n**Standard Server (60-120 FPS):**\r\n```json\r\n\"Effects\": {\r\n  \"EnableShadows\": true,\r\n  \"EnableGlow\": false,\r\n  \"EnableBlur\": true,\r\n  \"EnableAnimations\": false\r\n}\r\n```\r\n\r\n**Potato Server (Low-end):**\r\n```json\r\n\"Effects\": {\r\n  \"EnableShadows\": false,\r\n  \"EnableGlow\": false,\r\n  \"EnableBlur\": false,\r\n  \"EnableAnimations\": false\r\n}\r\n```\r\n\r\n---\r\n\r\n#### Complete Theme Examples\r\n\r\n**Corporate Professional:**\r\n```json\r\n\"Theme\": {\r\n  \"Colors\": {\r\n    \"Primary\": \"#1e40af\",\r\n    \"Secondary\": \"#059669\",\r\n    \"Success\": \"#10b981\",\r\n    \"Warning\": \"#f59e0b\",\r\n    \"Error\": \"#dc2626\",\r\n    \"Info\": \"#0284c7\",\r\n    \"Background\": \"#1e293b\",\r\n    \"Surface\": \"#334155\",\r\n    \"TextPrimary\": \"#f8fafc\",\r\n    \"TextSecondary\": \"#cbd5e1\",\r\n    \"Border\": \"#475569\",\r\n    \"Shadow\": \"#0f172a\",\r\n    \"Accent\": \"#8b5cf6\"\r\n  },\r\n  \"Spacing\": {\r\n    \"Tiny\": 0.002,\r\n    \"Small\": 0.006,\r\n    \"Medium\": 0.012,\r\n    \"Large\": 0.024,\r\n    \"ExtraLarge\": 0.048\r\n  },\r\n  \"Typography\": {\r\n    \"TinySize\": 10,\r\n    \"SmallSize\": 12,\r\n    \"BodySize\": 14,\r\n    \"HeaderSize\": 16,\r\n    \"TitleSize\": 20\r\n  },\r\n  \"Effects\": {\r\n    \"EnableShadows\": true,\r\n    \"EnableGlow\": false,\r\n    \"EnableBlur\": true,\r\n    \"EnableAnimations\": false\r\n  }\r\n}\r\n```\r\n\r\n**Gaming Neon:**\r\n```json\r\n\"Theme\": {\r\n  \"Colors\": {\r\n    \"Primary\": \"#ec4899\",\r\n    \"Secondary\": \"#8b5cf6\",\r\n    \"Success\": \"#10b981\",\r\n    \"Warning\": \"#fbbf24\",\r\n    \"Error\": \"#ef4444\",\r\n    \"Info\": \"#06b6d4\",\r\n    \"Background\": \"#0f0f0f\",\r\n    \"Surface\": \"#1a1a1a\",\r\n    \"TextPrimary\": \"#ffffff\",\r\n    \"TextSecondary\": \"#a0a0a0\",\r\n    \"Border\": \"#333333\",\r\n    \"Shadow\": \"#000000\",\r\n    \"Accent\": \"#f97316\"\r\n  },\r\n  \"Spacing\": {\r\n    \"Tiny\": 0.003,\r\n    \"Small\": 0.007,\r\n    \"Medium\": 0.014,\r\n    \"Large\": 0.028,\r\n    \"ExtraLarge\": 0.056\r\n  },\r\n  \"Typography\": {\r\n    \"TinySize\": 11,\r\n    \"SmallSize\": 13,\r\n    \"BodySize\": 15,\r\n    \"HeaderSize\": 17,\r\n    \"TitleSize\": 22\r\n  },\r\n  \"Effects\": {\r\n    \"EnableShadows\": true,\r\n    \"EnableGlow\": true,\r\n    \"EnableBlur\": true,\r\n    \"EnableAnimations\": true\r\n  }\r\n}\r\n```\r\n\r\n**Minimalist Clean:**\r\n```json\r\n\"Theme\": {\r\n  \"Colors\": {\r\n    \"Primary\": \"#2563eb\",\r\n    \"Secondary\": \"#10b981\",\r\n    \"Success\": \"#059669\",\r\n    \"Warning\": \"#d97706\",\r\n    \"Error\": \"#dc2626\",\r\n    \"Info\": \"#0284c7\",\r\n    \"Background\": \"#18181b\",\r\n    \"Surface\": \"#27272a\",\r\n    \"TextPrimary\": \"#fafafa\",\r\n    \"TextSecondary\": \"#a1a1aa\",\r\n    \"Border\": \"#3f3f46\",\r\n    \"Shadow\": \"#09090b\",\r\n    \"Accent\": \"#6366f1\"\r\n  },\r\n  \"Spacing\": {\r\n    \"Tiny\": 0.002,\r\n    \"Small\": 0.005,\r\n    \"Medium\": 0.01,\r\n    \"Large\": 0.02,\r\n    \"ExtraLarge\": 0.04\r\n  },\r\n  \"Typography\": {\r\n    \"TinySize\": 10,\r\n    \"SmallSize\": 12,\r\n    \"BodySize\": 14,\r\n    \"HeaderSize\": 16,\r\n    \"TitleSize\": 19\r\n  },\r\n  \"Effects\": {\r\n    \"EnableShadows\": false,\r\n    \"EnableGlow\": false,\r\n    \"EnableBlur\": true,\r\n    \"EnableAnimations\": false\r\n  }\r\n}\r\n```\r\n\r\n---\r\n\r\n#### Theme Troubleshooting\r\n\r\n**Problem: Colors look washed out in-game**\r\n- **Solution**: Increase color saturation, use darker backgrounds, ensure sufficient contrast\r\n\r\n**Problem: Text is hard to read**\r\n- **Solution**: Increase `TextPrimary` to `#ffffff`, darken `Background` color, enable `EnableBlur`\r\n\r\n**Problem: UI feels cramped**\r\n- **Solution**: Increase all `Spacing` values by 25-50%, increase `Typography` sizes by 1-2pt\r\n\r\n**Problem: UI feels too large**\r\n- **Solution**: Decrease `Spacing` values by 25%, decrease `Typography` sizes by 1-2pt\r\n\r\n**Problem: Performance issues**\r\n- **Solution**: Disable all `Effects`, use simpler colors without transparency\r\n\r\n---\r\n\r\n### Commands\r\n\r\n```json\r\n\"Commands\": {\r\n  \"Open MapVoter UI\": \"mvote\",\r\n  \"Generate Maps\": \"MapVoter.generate\",\r\n  \"vote result\": \"voteresult\"\r\n}\r\n```\r\n\r\n| Option | Default | Description |\r\n|--------|---------|-------------|\r\n| **Open MapVoter UI** | `mvote` | In-game command players use to open the voting UI |\r\n| **Generate Maps** | `MapVoter.generate` | Admin command to generate new map options |\r\n| **vote result** | `voteresult` | Command to view current voting results |\r\n\r\n**Examples:**\r\n- Player types `/mvote` in chat → Opens voting UI\r\n- Admin types `/MapVoter.generate 5` → Generates 5 random maps\r\n- Anyone types `/voteresult` → Shows current vote standings\r\n\r\n---\r\n\r\n### Rewards\r\n\r\n```json\r\n\"Rewards\": {\r\n  \"Rust rewards\": true,\r\n  \"reward points\": 5,\r\n  \"Kits\": true,\r\n  \"Kit name\": \"\"\r\n}\r\n```\r\n\r\n| Option | Default | Description |\r\n|--------|---------|-------------|\r\n| **Rust rewards** | `true` | Enable ServerRewards points for voting |\r\n| **reward points** | `5` | Number of ServerRewards points given per vote |\r\n| **Kits** | `true` | Enable kit rewards for voting (requires Kits plugin) |\r\n| **Kit name** | `\"\"` | Name of the kit given to voters (leave empty to disable) |\r\n\r\n**Requirements:**\r\n- **ServerRewards** plugin installed and configured by admin (for points)\r\n- **Kits** plugin installed (for kit rewards)\r\n\r\n**When are rewards given?**\r\n- Immediately after a player casts their vote (not when map wins)\r\n\r\n---\r\n\r\n### Fun Kit\r\n\r\n```json\r\n\"Fun Kit\": {\r\n  \"Fun kit enabled\": false,\r\n  \"Enable Fun kit x minutes before wipe\": 120,\r\n  \"Kit name\": \"FunKit\",\r\n  \"Permission\": \"\"\r\n}\r\n```\r\n\r\n| Option | Default | Description |\r\n|--------|---------|-------------|\r\n| **Fun kit enabled** | `false` | Enable the fun kit system |\r\n| **Enable Fun kit x minutes before wipe** | `120` | Minutes before wipe to enable the kit (2 hours) |\r\n| **Kit name** | `\"FunKit\"` | Name of the kit to give players |\r\n| **Permission** | `\"\"` | Permission required to claim kit (leave empty for everyone) |\r\n\r\n**Purpose**: Give players special items/weapons before wipe for pre-wipe PvP events.\r\n\r\n**Example Scenario:**\r\n- Wipe is scheduled for 19:00\r\n- Fun kit enabled at 120 minutes before = 17:00\r\n- Players can claim \"FunKit\" from 17:00 to 19:00 for pre-wipe chaos!\r\n\r\n---\r\n\r\n### Options\r\n\r\n```json\r\n\"Options\": {\r\n  \"Enable file Debug mode (true/false)\": false,\r\n  \"Enable Console Debug mode (true/false)\": false,\r\n  \"Disable UI\": false\r\n}\r\n```\r\n\r\n| Option | Default | Description |\r\n|--------|---------|-------------|\r\n| **Enable file Debug mode** | `false` | Logs detailed debug info to `oxide/logs/MapVoter_debug.txt` |\r\n| **Enable Console Debug mode** | `false` | Prints debug messages to server console |\r\n| **Disable UI** | `false` | Disables the in-game voting UI (Discord-only voting) |\r\n\r\n⚠️ **Performance Warning**: Only enable debug modes when troubleshooting issues. They generate large log files.\r\n\r\n---\r\n\r\n### RustMaps Settings\r\n\r\n```json\r\n\"RustMaps Settings\": {\r\n  \"Map size\": 3500,\r\n  \"RustMaps API key\": \"https://rustmaps.com/user/profile\",\r\n  \"RustMaps ORG ID\": \"https://rustmaps.com/user/profile\",\r\n  \"Select random maps from rustmaps filter id instead of generating random maps on wipe day (true/false)\": false,\r\n  \"How many pages the plugin looks up per search request(every page has 30 maps\": 10,\r\n  \"staging\": false,\r\n  \"barren\": false,\r\n  \"filter Id\": \"Visit https://rustmaps.com/...\"\r\n}\r\n```\r\n\r\n| Option | Default | Description |\r\n|--------|---------|-------------|\r\n| **Map size** | `3500` | Size of generated procedural maps (1000-6000) |\r\n| **RustMaps API key** | - | Your RustMaps.com API key (get from profile) |\r\n| **RustMaps ORG ID** | - | Your RustMaps.com Organization ID (get from profile) |\r\n| **Select random maps from rustmaps filter id...** | `false` | Use pre-filtered maps instead of random generation |\r\n| **How many pages...** | `10` | Number of pages to search (30 maps per page) |\r\n| **staging** | `false` | Include staging branch maps in search |\r\n| **barren** | `false` | Include barren maps in search |\r\n| **filter Id** | - | RustMaps filter ID for custom map criteria |\r\n\r\n#### Getting Your Filter ID:\r\n\r\n1. Visit https://rustmaps.com/\r\n2. Adjust map requirements (size, seed range, features, etc.)\r\n3. Click the **Share** button (red box above settings)\r\n4. Copy the string at the end of the URL\r\n\r\n**Example:**\r\n- URL: `https://rustmaps.com/?share=gEU5W6BUuUG5FpPlyv2nhQ`\r\n- Filter ID: `gEU5W6BUuUG5FpPlyv2nhQ`\r\n\r\n**Map Size Recommendations:**\r\n- Small servers (1-50 players): 2500-3000\r\n- Medium servers (50-150 players): 3500-4000\r\n- Large servers (150+ players): 4500-5500\r\n\r\n---\r\n\r\n### Discord Settings\r\n\r\n```json\r\n\"Discord Settings\": {\r\n  \"Discord Server ID (Optional if bot only in 1 guild)\": 0,\r\n  \"Enable Discord bot (true/false)\": true,\r\n  \"Log to Discord (true/false)\": false,\r\n  \"Discord Logs Channel Id\": \"\",\r\n  \"Vote Channel id\": \"\",\r\n  \"Winning Map Channel id\": \"\",\r\n  \"Mention role on vote start and end\": \"@everyone\",\r\n  \"Create new thread for every vote\": false,\r\n  \"Wipe time (HH:mm) 24-hour clock (leave empty if you want to use the server wipe local wipe time)\": \"\",\r\n  \"Discord Apikey\": \"BotToken\",\r\n  \"Discord Command Prefix\": \"!\",\r\n  \"Discord Channels\": [...],\r\n  \"Discord Command Role Assignment (Empty = All roles can use command.)\": {...},\r\n  \"Single Embed?\": false,\r\n  \"Discord avatar url\": \"\",\r\n  \"Discord footer\": \"\",\r\n  \"Embed Url\": \"https://rustmaps.com\"\r\n}\r\n```\r\n\r\n| Option | Default | Description |\r\n|--------|---------|-------------|\r\n| **Discord Server ID** | `0` | Your Discord server (guild) ID (optional if bot is only in 1 server) |\r\n| **Enable Discord bot** | `true` | Enable Discord integration |\r\n| **Log to Discord** | `false` | Send plugin events to Discord log channel |\r\n| **Discord Logs Channel Id** | `\"\"` | Channel ID for logs (right-click channel → Copy ID) |\r\n| **Vote Channel id** | `\"\"` | Channel ID where vote embeds are posted during voting |\r\n| **Winning Map Channel id** | `\"\"` | Channel ID where the winning map is announced after voting ends |\r\n| **Mention role on vote start and end** | `\"@everyone\"` | Role to ping when votes start/end (use `||@everyone||` to suppress notification) |\r\n| **Create new thread for every vote** | `false` | Create a new thread for each voting session |\r\n| **Wipe time (HH:mm)** | `\"\"` | Discord announcement time (empty = use Auto Wipe time) |\r\n| **Discord Apikey** | `\"BotToken\"` | Your Discord bot token |\r\n| **Discord Command Prefix** | `\"!\"` | Prefix for Discord commands (`!vote`, `!generate`) |\r\n| **Single Embed?** | `false` | Use single embed for all maps vs. separate embeds |\r\n| **Discord avatar url** | `\"\"` | Custom avatar URL for bot messages |\r\n| **Discord footer** | `\"\"` | Custom footer text for embeds |\r\n| **Embed Url** | `\"https://rustmaps.com\"` | URL when clicking embed title |\r\n\r\n#### Setting Up Discord Bot:\r\n\r\n1. **Create Bot:**\r\n   - Go to https://discord.com/developers/applications\r\n   - Create New Application → Bot → Add Bot\r\n   - Copy Bot Token → Paste into `\"Discord Apikey\"`\r\n\r\n2. **Enable Intents:**\r\n   - Bot settings → Enable \"Server Members Intent\" and \"Message Content Intent\"\r\n\r\n3. **Invite Bot:**\r\n   - OAuth2 → URL Generator\r\n   - Scopes: `bot`, `applications.commands`\r\n   - Permissions Required:\r\n     - ✅ Read Messages/View Channels\r\n     - ✅ Send Messages\r\n     - ✅ Embed Links\r\n     - ✅ Attach Files\r\n     - ✅ Add Reactions\r\n     - ✅ Manage Messages (for voting reactions)\r\n     - ✅ Create Public Threads (if using thread feature)\r\n   - Copy URL and open in browser\r\n\r\n4. **Get Channel IDs:**\r\n   - Discord Settings → Advanced → Enable Developer Mode\r\n   - Right-click channel → Copy ID\r\n\r\n#### Discord Channels Configuration:\r\n\r\n```json\r\n\"Discord Channels\": [\r\n  {\r\n    \"Discord Channel ID\": 0,\r\n    \"Commands\": [\r\n      \"generate\",\r\n      \"vote\",\r\n      \"mapwipe\",\r\n      \"bpwipe\",\r\n      \"cancelwipe\",\r\n      \"stopvoting\",\r\n      \"update\",\r\n      \"cancelupdate\"\r\n    ]\r\n  }\r\n]\r\n```\r\n\r\n**Commands:**\r\n- `generate` - Generate new map options for voting\r\n- `vote` - Display current voting results and standings\r\n- `mapwipe` - Force immediate map wipe (bypasses schedule)\r\n- `bpwipe` - Force immediate blueprint wipe\r\n- `cancelwipe` - Cancel a scheduled wipe\r\n- `stopvoting` - End the current vote early\r\n- `update` - Update server to a new map/seed immediately\r\n- `cancelupdate` - Cancel a pending map update\r\n\r\n#### Discord Command Role Assignment:\r\n\r\n```json\r\n\"Discord Command Role Assignment (Empty = All roles can use command.)\": {\r\n  \"generate\": [\"Admin\", \"Moderator\"],\r\n  \"vote\": [],\r\n  \"mapwipe\": [\"Admin\"]\r\n}\r\n```\r\n\r\n- Empty array `[]` = Everyone can use the command\r\n- Add role names to restrict access\r\n- Role names are case-sensitive\r\n\r\n---\r\n\r\n### Auto Vote\r\n\r\n```json\r\n\"Auto Vote\": {\r\n  \"Voting Settings\": {\r\n    \"Stop voting after (minutes)\": 60,\r\n    \"Only players with permission can vote (true/false)\": false\r\n  },\r\n  \"Enable Auto Vote (true/false)\": false,\r\n  \"Only Authenticated users can vote through discord\": false,\r\n  \"Start voting X days before wipe\": 0,\r\n  \"Vote start (HH:mm) 24-hour clock\": \"17:00\",\r\n  \"Number of maps generated\": 4\r\n}\r\n```\r\n\r\n| Option | Default | Description |\r\n|--------|---------|-------------|\r\n| **Stop voting after (minutes)** | `60` | Minutes after vote start time (on wipe day) to close voting. Vote ends at: `Vote start time + this value` (see [Voting Timeline](#voting-timeline-explained)) |\r\n| **Only players with permission can vote** | `false` | Require `mapvoter.vote` permission to vote |\r\n| **Enable Auto Vote** | `false` | Automatically start votes before scheduled wipes |\r\n| **Only Authenticated users can vote through discord** | `false` | Only verified users can vote (users who linked Discord with Steam account) |\r\n| **Start voting X days before wipe** | `0` | Days before wipe to start voting (0 = same day) |\r\n| **Vote start (HH:mm) 24-hour clock** | `\"17:00\"` | Time to start voting (5:00 PM) |\r\n| **Number of maps generated** | `4` | How many map options to generate for voting |\r\n\r\n---\r\n\r\n### Auto Wipe\r\n\r\n```json\r\n\"Auto Wipe\": {\r\n  \"Custom Map\": {\r\n    \"Enable custom map (true/false)\": false,\r\n    \"Custom map URL\": \"\"\r\n  },\r\n  \"Generate Custom Map\": {\r\n    \"Generate custom map instead of procedural on vote start (true/false)\": false,\r\n    \"Saved custom config name (RustMaps)\": \"CustomMapConfigName\"\r\n  },\r\n  \"Map Wipe schedule\": [7, 14, 21, 28],\r\n  \"BP Wipe schedule\": [0],\r\n  \"Server identity\": \"server\",\r\n  \"Enable Auto Wipe (true/false)\": true,\r\n  \"Wipe BPs at forced wipe day\": true,\r\n  \"Forced Wipe time (HH:mm) 24-hour clock\": \"19:00\",\r\n  \"Wipe time (HH:mm) 24-hour clock\": \"19:00\"\r\n}\r\n```\r\n\r\n| Option | Default | Description |\r\n|--------|---------|-------------|\r\n| **Enable custom map** | `false` | Use a specific custom map URL instead of voting |\r\n| **Custom map URL** | `\"\"` | Direct URL to `.map` file (must end with `.map` extension) |\r\n| **Generate custom map instead of procedural...** | `false` | Generate custom maps (RustEdit style) for voting |\r\n| **Saved custom config name** | `\"CustomMapConfigName\"` | RustMaps saved configuration name |\r\n| **Map Wipe schedule** | `[7, 14, 21, 28]` | Days after forced wipe to wipe map (see [Calculator](#wipe-schedule-calculator)) |\r\n| **BP Wipe schedule** | `[0]` | Days after forced wipe to wipe BPs (0 = forced wipe only) |\r\n| **Server identity** | `\"server\"` | Your server's identity folder name (where server.cfg is located) - see [Server Identity Guide](#server-identity-explained) |\r\n| **Enable Auto Wipe** | `true` | Enable automatic wipe system |\r\n| **Wipe BPs at forced wipe day** | `true` | Wipe blueprints on forced wipe day |\r\n| **Forced Wipe time (HH:mm)** | `\"19:00\"` | Time to wipe on forced wipe day (7:00 PM) |\r\n| **Wipe time (HH:mm)** | `\"19:00\"` | Time to wipe on regular wipe days (7:00 PM) |\r\n\r\n---\r\n\r\n### Plugins Data Wipe\r\n\r\n```json\r\n\"Plugins Data Wipe\": {\r\n  \"Enable plugins data wipe on forced wipe day\": false,\r\n  \"Enable plugins data wipe on map wipe day\": false,\r\n  \"File names to be deleted on forced wipe day\": [\"exampleplugin\"],\r\n  \"File names to be deleted on map wipe day\": [\"exampleplugin\"]\r\n}\r\n```\r\n\r\n| Option | Default | Description |\r\n|--------|---------|-------------|\r\n| **Enable plugins data wipe on forced wipe day** | `false` | Delete specified plugin data files on forced wipe (first Thursday) |\r\n| **Enable plugins data wipe on map wipe day** | `false` | Delete specified plugin data files on regular map wipes |\r\n| **File names to be deleted on forced wipe day** | `[\"exampleplugin\"]` | Array of plugin data file names to delete on forced wipe |\r\n| **File names to be deleted on map wipe day** | `[\"exampleplugin\"]` | Array of plugin data file names to delete on map wipe |\r\n\r\n**How It Works:**\r\n- Plugin data files are stored in `oxide/data/` folder\r\n- File names should match the exact plugin data file name (without `.json` extension)\r\n- Multiple files can be specified in the array\r\n\r\n**Examples:**\r\n\r\n**Reset player stats on forced wipe only:**\r\n```json\r\n\"Plugins Data Wipe\": {\r\n  \"Enable plugins data wipe on forced wipe day\": true,\r\n  \"Enable plugins data wipe on map wipe day\": false,\r\n  \"File names to be deleted on forced wipe day\": [\r\n    \"PlayerRanks\",\r\n    \"PlaytimeTracker\",\r\n    \"PlayerDatabase\"\r\n  ],\r\n  \"File names to be deleted on map wipe day\": []\r\n}\r\n```\r\n\r\n**Clear economy plugins on every map wipe:**\r\n```json\r\n\"Plugins Data Wipe\": {\r\n  \"Enable plugins data wipe on forced wipe day\": true,\r\n  \"Enable plugins data wipe on map wipe day\": true,\r\n  \"File names to be deleted on forced wipe day\": [\r\n    \"Economics\",\r\n    \"ServerRewards\"\r\n  ],\r\n  \"File names to be deleted on map wipe day\": [\r\n    \"Economics\",\r\n    \"ServerRewards\"\r\n  ]\r\n}\r\n```\r\n\r\n**Different wipes for different schedules:**\r\n```json\r\n\"Plugins Data Wipe\": {\r\n  \"Enable plugins data wipe on forced wipe day\": true,\r\n  \"Enable plugins data wipe on map wipe day\": true,\r\n  \"File names to be deleted on forced wipe day\": [\r\n    \"PlayerRanks\",\r\n    \"Economics\",\r\n    \"ServerRewards\",\r\n    \"Clans\"\r\n  ],\r\n  \"File names to be deleted on map wipe day\": [\r\n    \"RaidableBases\",\r\n    \"DynamicPVP\"\r\n  ]\r\n}\r\n```\r\n\r\n**Common Plugin Data Files to Wipe:**\r\n- `PlayerRanks` - Player ranking/statistics\r\n- `Economics` - Economy plugin balances\r\n- `ServerRewards` - Reward points\r\n- `Clans` - Clan data\r\n- `PlaytimeTracker` - Playtime tracking\r\n- `RaidableBases` - Raidable bases event data\r\n- `DynamicPVP` - PVP zone data\r\n- `ZoneManager` - Zone data\r\n- `LootDefender` - Loot protection data\r\n\r\n---\r\n\r\n## Common Scenarios\r\n\r\n### Weekly Wipes (Map Only, BP at Forced Wipe)\r\n\r\n**Scenario**: Wipe the map every Thursday, wipe BPs only on forced wipe (first Thursday of month)\r\n\r\n```json\r\n\"Auto Wipe\": {\r\n  \"Map Wipe schedule\": [7],\r\n  \"BP Wipe schedule\": [0],\r\n  \"Wipe BPs at forced wipe day\": true,\r\n  \"Wipe time (HH:mm) 24-hour clock\": \"19:00\"\r\n}\r\n```\r\n\r\n**Result**:\r\n- **First Thursday of Month**: Map + BP wipe at 19:00\r\n- **Other Thursdays**: Map wipe only at 19:00\r\n\r\n---\r\n\r\n### Bi-Weekly Wipes\r\n\r\n**Scenario**: Wipe every 2 weeks (twice per month)\r\n\r\n```json\r\n\"Auto Wipe\": {\r\n  \"Map Wipe schedule\": [14],\r\n  \"BP Wipe schedule\": [0],\r\n  \"Wipe BPs at forced wipe day\": true,\r\n  \"Wipe time (HH:mm) 24-hour clock\": \"19:00\"\r\n}\r\n```\r\n\r\n**Result**:\r\n- **First Thursday**: Forced wipe + BP wipe at 19:00\r\n- **~Two Weeks Later**: Map wipe only at 19:00\r\n\r\n---\r\n\r\n### Monthly Wipes (Forced Wipe Only)\r\n\r\n**Scenario**: Wipe only on forced wipe day (first Thursday)\r\n\r\n```json\r\n\"Auto Wipe\": {\r\n  \"Map Wipe schedule\": [],\r\n  \"BP Wipe schedule\": [0],\r\n  \"Wipe BPs at forced wipe day\": true,\r\n  \"Wipe time (HH:mm) 24-hour clock\": \"19:00\"\r\n}\r\n```\r\n\r\n---\r\n\r\n### Custom Schedule (Wipe on Specific Days)\r\n\r\n**Scenario**: Wipe 3 times per month (every 10 days approximately)\r\n\r\n```json\r\n\"Auto Wipe\": {\r\n  \"Map Wipe schedule\": [10, 20],\r\n  \"BP Wipe schedule\": [0],\r\n  \"Wipe BPs at forced wipe day\": true,\r\n  \"Wipe time (HH:mm) 24-hour clock\": \"19:00\"\r\n}\r\n```\r\n\r\n---\r\n\r\n### Voting 1 Day Before Wipe\r\n\r\n**Scenario**: Start voting 24 hours before wipe, close voting 1 hour before wipe\r\n\r\n```json\r\n\"Auto Vote\": {\r\n  \"Enable Auto Vote (true/false)\": true,\r\n  \"Start voting X days before wipe\": 1,\r\n  \"Vote start (HH:mm) 24-hour clock\": \"17:00\",\r\n  \"Voting Settings\": {\r\n    \"Stop voting after (minutes)\": 60\r\n  }\r\n}\r\n```\r\n\r\n**Timeline** (assuming wipe at 19:00):\r\n- **Day Before Wipe, 17:00**: Voting starts\r\n- **Day Before Wipe, 17:00 - 23:59**: Players can vote\r\n- **Wipe Day, 00:00 - 17:59**: Players can vote\r\n- **Wipe Day, 18:00**: Voting ends (17:00 + 60 minutes)\r\n- **Wipe Day, 19:00**: Server wipes to winning map\r\n\r\n**Note**: Vote start time (17:00) is 2 hours before wipe time (19:00) - this is required!\r\n\r\n---\r\n\r\n## Wipe Schedule Calculator\r\n\r\n### Understanding Forced Wipe\r\n\r\n**Forced Wipe** occurs on the **first Thursday of every month** at the time specified by Facepunch Studios (usually around 2:00 PM EST / 19:00 UTC).\r\n\r\n### How Schedules Work\r\n\r\nThe `\"Map Wipe schedule\"` and `\"BP Wipe schedule\"` arrays define wipe days **relative to the forced wipe date**.\r\n\r\n**Format**: `[days_after_forced_wipe, days_after_forced_wipe, ...]`\r\n\r\n### Examples\r\n\r\n#### Example 1: Weekly Wipes\r\n\r\n```json\r\n\"Map Wipe schedule\": [7, 14, 21, 28]\r\n```\r\n\r\n**Calculation** (assuming forced wipe on January 3rd):\r\n- **January 3 (Forced Wipe)**: Map + BP wipe\r\n- **January 10** (3 + 7 days): Map wipe\r\n- **January 17** (3 + 14 days): Map wipe\r\n- **January 24** (3 + 21 days): Map wipe\r\n- **January 31** (3 + 28 days): Map wipe\r\n- **February 7 (Next Forced Wipe)**: Map + BP wipe (cycle repeats)\r\n\r\n**Result**: Wipe every Thursday (weekly)\r\n\r\n#### Example 2: Bi-Weekly Wipes\r\n\r\n```json\r\n\"Map Wipe schedule\": [14, 28]\r\n```\r\n\r\n**Calculation** (assuming forced wipe on January 3rd):\r\n- **January 3 (Forced Wipe)**: Map + BP wipe\r\n- **January 17** (3 + 14 days): Map wipe\r\n- **January 31** (3 + 28 days): Map wipe\r\n- **February 7 (Next Forced Wipe)**: Map + BP wipe\r\n\r\n**Result**: Wipe every 2 weeks\r\n\r\n#### Example 3: BP Wipe Every 2 Months\r\n\r\n```json\r\n\"Map Wipe schedule\": [7, 14, 21, 28],\r\n\"BP Wipe schedule\": [0, 35]\r\n```\r\n\r\n**Calculation**:\r\n- **Month 1, Day 0**: Map + BP wipe (forced)\r\n- **Month 1, Day 7-28**: Map wipes only\r\n- **Month 2, Day 0**: Map wipe only (no BP wipe)\r\n- **Month 2, Day 7-28**: Map wipes only\r\n- **Month 2, Day 35** (5 weeks after last BP wipe): BP wipe\r\n- Cycle continues...\r\n\r\n**Note**: `0` in BP Wipe schedule means \"wipe on forced wipe day\"\r\n\r\n### Visual Calendar Example\r\n\r\n**Configuration:**\r\n```json\r\n\"Map Wipe schedule\": [7, 14, 21, 28],\r\n\"BP Wipe schedule\": [0]\r\n```\r\n\r\n**January 2025 Calendar:**\r\n```\r\nSun Mon Tue Wed Thu Fri Sat\r\n              1   2   3   4\r\n                          ↑\r\n                      Forced Wipe\r\n                      Map + BP\r\n\r\n 5   6   7   8   9  10  11\r\n                      ↑\r\n                    Map Only\r\n                    (7 days)\r\n\r\n12  13  14  15  16  17  18\r\n                      ↑\r\n                    Map Only\r\n                    (14 days)\r\n\r\n19  20  21  22  23  24  25\r\n                      ↑\r\n                    Map Only\r\n                    (21 days)\r\n\r\n26  27  28  29  30  31\r\n                      ↑\r\n                    Map Only\r\n                    (28 days)\r\n```\r\n\r\n**February 2025:**\r\n```\r\nSun Mon Tue Wed Thu Fri Sat\r\n                          1\r\n 2   3   4   5   6   7   8\r\n              ↑\r\n          Forced Wipe\r\n          Map + BP\r\n```\r\n\r\n---\r\n\r\n### Interactive Wipe Schedule Picker\r\n\r\n<div id=\"wipePickerPlaceholder\"></div>\r\n\r\n---\r\n\r\n## Voting Timeline Explained\r\n\r\n### Important: How Voting Timing Works\r\n\r\n⚠️ **Critical Rule**: Vote start time MUST be **at least 2 hours before wipe time**!\r\n\r\n**How Voting Ends:**\r\nVoting stops on wipe day at: `Vote start time + Stop voting after (minutes)`\r\n\r\n**NOT** relative to wipe time, but relative to the vote start time on wipe day.\r\n\r\n---\r\n\r\n### Example Scenario 1: Voting 1 Day Before Wipe\r\n\r\n**Configuration:**\r\n```json\r\n\"Auto Vote\": {\r\n  \"Start voting X days before wipe\": 1,\r\n  \"Vote start (HH:mm) 24-hour clock\": \"17:00\",\r\n  \"Voting Settings\": {\r\n    \"Stop voting after (minutes)\": 60\r\n  }\r\n}\r\n```\r\n\r\n**Wipe Schedule:**\r\n- Wipe Day: Thursday\r\n- Wipe Time: 19:00\r\n\r\n**Timeline:**\r\n\r\n| Day | Time | Event |\r\n|-----|------|-------|\r\n| **Wednesday** | 17:00 | ✅ **Voting Starts** |\r\n| Wednesday | 17:00 - 23:59 | 🗳️ Players can vote |\r\n| **Thursday** | 00:00 - 17:59 | 🗳️ Players can vote |\r\n| **Thursday** | 18:00 | ⛔ **Voting Ends** (17:00 + 60 minutes) |\r\n| **Thursday** | 19:00 | ⏰ **Server Wipes** to winning map |\r\n\r\n**Total Voting Time**: 25 hours (Wed 17:00 → Thu 18:00)\r\n\r\n---\r\n\r\n### Example Scenario 2: Same Day Voting\r\n\r\n**Configuration:**\r\n```json\r\n\"Auto Vote\": {\r\n  \"Start voting X days before wipe\": 0,\r\n  \"Vote start (HH:mm) 24-hour clock\": \"10:00\",\r\n  \"Voting Settings\": {\r\n    \"Stop voting after (minutes)\": 60\r\n  }\r\n}\r\n```\r\n\r\n**Wipe Schedule:**\r\n- Wipe Day: Thursday\r\n- Wipe Time: 19:00\r\n\r\n**Timeline:**\r\n\r\n| Day | Time | Event |\r\n|-----|------|-------|\r\n| **Thursday** | 10:00 | ✅ **Voting Starts** |\r\n| **Thursday** | 10:00 - 10:59 | 🗳️ Players can vote |\r\n| **Thursday** | 11:00 | ⛔ **Voting Ends** (10:00 + 60 minutes) |\r\n| **Thursday** | 19:00 | ⏰ **Server Wipes** to winning map |\r\n\r\n**Total Voting Time**: 1 hour (Thu 10:00 → Thu 11:00)\r\n\r\n---\r\n\r\n### Key Rules & Best Practices\r\n\r\n#### ✅ Required Rules:\r\n\r\n1. **Vote start time MUST be at least 2 hours before wipe time**\r\n   - ✅ Wipe at 19:00 → Vote start at 17:00 or earlier (OK)\r\n   - ❌ Wipe at 19:00 → Vote start at 18:00 (TOO LATE!)\r\n\r\n2. **Voting ends at**: `Vote start time + Stop voting after (minutes)`\r\n   - Example: Vote starts 17:00, stop after 60 min → Ends at 18:00\r\n   - Example: Vote starts 10:00, stop after 120 min → Ends at 12:00\r\n\r\n#### 💡 Recommended Configuration:\r\n\r\n**Stop voting 1 hour after vote start time on wipe day:**\r\n```json\r\n\"Stop voting after (minutes)\": 60\r\n```\r\n\r\nThis gives players a 1-hour window on wipe day to cast their final votes.\r\n\r\n---\r\n\r\n### Common Configurations:\r\n\r\n#### Recommended: 1 Hour Voting Window on Wipe Day\r\n```json\r\n\"Auto Vote\": {\r\n  \"Start voting X days before wipe\": 1,\r\n  \"Vote start (HH:mm) 24-hour clock\": \"17:00\",\r\n  \"Voting Settings\": {\r\n    \"Stop voting after (minutes)\": 60\r\n  }\r\n}\r\n```\r\n**Result**: \r\n- Voting starts: Day before wipe at 17:00\r\n- Voting ends: Wipe day at 18:00 (17:00 + 60 min)\r\n- Wipe happens: Wipe day at 19:00\r\n\r\n---\r\n\r\n#### Extended: 2 Hour Voting Window on Wipe Day\r\n```json\r\n\"Auto Vote\": {\r\n  \"Start voting X days before wipe\": 1,\r\n  \"Vote start (HH:mm) 24-hour clock\": \"16:00\",\r\n  \"Voting Settings\": {\r\n    \"Stop voting after (minutes)\": 120\r\n  }\r\n}\r\n```\r\n**Result**:\r\n- Voting starts: Day before wipe at 16:00\r\n- Voting ends: Wipe day at 18:00 (16:00 + 120 min)\r\n- Wipe happens: Wipe day at 19:00\r\n\r\n---\r\n\r\n#### Short Notice: 3 Hours Total Voting\r\n```json\r\n\"Auto Vote\": {\r\n  \"Start voting X days before wipe\": 0,\r\n  \"Vote start (HH:mm) 24-hour clock\": \"15:00\",\r\n  \"Voting Settings\": {\r\n    \"Stop voting after (minutes)\": 180\r\n  }\r\n}\r\n```\r\n**Result**:\r\n- Voting starts: Wipe day at 15:00\r\n- Voting ends: Wipe day at 18:00 (15:00 + 180 min)\r\n- Wipe happens: Wipe day at 19:00\r\n\r\n---\r\n\r\n### ⚠️ Common Mistakes to Avoid\r\n\r\n#### ❌ WRONG: Vote Start Too Close to Wipe\r\n```json\r\n\"Vote start (HH:mm) 24-hour clock\": \"18:00\"  // Wipe at 19:00\r\n```\r\n**Problem**: Less than 2 hours before wipe - will cause errors!\r\n\r\n#### ❌ WRONG: Voting Ends After Wipe Time\r\n```json\r\n\"Vote start (HH:mm) 24-hour clock\": \"17:00\"\r\n\"Stop voting after (minutes)\": 180  // Ends at 20:00\r\n```\r\n**Problem**: Wipe happens at 19:00, but voting doesn't end until 20:00!\r\n\r\n#### ✅ CORRECT: Proper Configuration\r\n```json\r\n\"Vote start (HH:mm) 24-hour clock\": \"17:00\"\r\n\"Stop voting after (minutes)\": 60  // Ends at 18:00\r\n```\r\n**Result**: Voting ends 1 hour before wipe - perfect!\r\n\r\n---\r\n\r\n## Server Identity Explained\r\n\r\nThe `\"Server identity\"` setting tells the plugin where your server's configuration files are located.\r\n\r\n### What is Server Identity?\r\n\r\nServer identity is a folder name in your Rust server directory that contains server-specific files:\r\n```\r\nrust_server/\r\n├── server/\r\n│   ├── your_identity_name/     ← This is your server identity\r\n│   │   ├── cfg/\r\n│   │   │   └── server.cfg      ← Your server configuration\r\n│   │   ├── storage/\r\n│   │   └── saves/\r\n```\r\n\r\n### Default Identity\r\n\r\nBy default, Rust uses `server` as the identity name, but you can customize it.\r\n\r\n### How to Find Your Server Identity\r\n\r\n**Method 1: Check Startup Command**\r\nLook at your server startup script/batch file for the `-identity` parameter:\r\n```bash\r\nRustDedicated.exe -batchmode -identity \"my_server_name\"\r\n                                        ^^^^^^^^^^^^^^^^\r\n                                        This is your identity\r\n```\r\n\r\n**Method 2: Check Server Folder**\r\nNavigate to your Rust server directory and look in the `server/` folder. The folder name inside is your identity.\r\n\r\n### Configuration Examples\r\n\r\n**Default identity:**\r\n```json\r\n\"Server identity\": \"server\"\r\n```\r\n\r\n**Custom identity:**\r\n```json\r\n\"Server identity\": \"my_rust_server\"\r\n```\r\n\r\n**Multiple servers on same machine:**\r\n```json\r\n// Server 1\r\n\"Server identity\": \"main_server\"\r\n\r\n// Server 2\r\n\"Server identity\": \"test_server\"\r\n```\r\n\r\n### Why Is This Important?\r\n\r\nThe plugin needs to know the identity to:\r\n- ✅ Load the correct map after wipe\r\n- ✅ Write to the correct save folder\r\n- ✅ Apply wipes to the correct server instance\r\n\r\n⚠️ **Important**: If this is incorrect, wipes will fail or affect the wrong server!\r\n\r\n### More Information\r\n\r\nFor detailed information about server identity and configuration:\r\n- **Official Rust Wiki**: https://wiki.facepunch.com/rust/Creating-a-server\r\n- **Server.cfg Setup**: Place your configuration file at: `rust/server/your_identity/cfg/server.cfg`\r\n\r\n**Example server.cfg:**\r\n```\r\nserver.hostname \"My Awesome Rust Server\"\r\nserver.description \"Weekly wipes with MapVoter!\"\r\nserver.url \"https://myserver.com\"\r\nserver.headerimage \"https://myserver.com/banner.jpg\"\r\nserver.worldsize 3500\r\nserver.seed 12345\r\nserver.maxplayers 100\r\n```\r\n\r\n**Note**: Variables in server.cfg don't use `+` or `-` prefixes (unlike command line).\r\n\r\n---\r\n\r\n## Troubleshooting\r\n\r\n### Plugin Not Loading\r\n\r\n**Symptoms**: No errors, plugin doesn't appear in `oxide.plugins`\r\n\r\n**Solutions**:\r\n1. Check Oxide is installed: `oxide.version` in console\r\n2. Verify file is in `oxide/plugins/MapVoter.cs`\r\n3. Check server console for compilation errors\r\n4. Ensure all dependencies installed (see below)\r\n\r\n### Required Dependencies\r\n\r\nThis plugin requires:\r\n- **Oxide.Ext.Discord** - Discord extension for Oxide\r\n- **Newtonsoft.Json** - JSON serialization (usually included)\r\n\r\n**Optional Plugins:**\r\n- **ServerRewards** - For reward points\r\n- **Kits** - For kit rewards\r\n- **ImageLibrary** - For custom UI images\r\n\r\n### RustMaps API Not Working\r\n\r\n**Symptoms**: \"API Key invalid\" or \"No maps found\"\r\n\r\n**Solutions**:\r\n1. Verify API key is correct (https://rustmaps.com/user/profile)\r\n2. Check Organization ID matches your account\r\n3. Ensure you have RustMaps subscription (required for API access)\r\n4. Test API key directly: `curl -H \"Authorization: Bearer YOUR_KEY\" https://api.rustmaps.com/v1/maps`\r\n\r\n### Discord Bot Not Responding\r\n\r\n**Symptoms**: Bot online but doesn't respond to commands\r\n\r\n**Solutions**:\r\n1. Check bot token is correct\r\n2. Verify bot has permissions:\r\n   - Read Messages\r\n   - Send Messages\r\n   - Embed Links\r\n   - Add Reactions\r\n   - Manage Messages (for voting reactions)\r\n3. Check channel IDs are correct (Developer Mode → Right-click → Copy ID)\r\n4. Verify command prefix matches (`!vote` if prefix is `!`)\r\n5. Check role restrictions in `\"Discord Command Role Assignment\"`\r\n\r\n### Voting Not Starting Automatically\r\n\r\n**Symptoms**: Manual voting works but auto-vote doesn't trigger\r\n\r\n**Solutions**:\r\n1. Verify `\"Enable Auto Vote (true/false)\": true`\r\n2. Check `\"Enable Auto Wipe (true/false)\": true` (auto-vote requires auto-wipe)\r\n3. Verify wipe schedule is configured correctly\r\n4. Check server time matches your expectations: `oxide.time` in console\r\n5. Enable debug mode and check logs: `\"Enable Console Debug mode (true/false)\": true`\r\n\r\n### Wipes Not Happening\r\n\r\n**Symptoms**: Wipe time passes but server doesn't wipe\r\n\r\n**Solutions**:\r\n1. Check `\"Enable Auto Wipe (true/false)\": true`\r\n2. Verify `\"Map Wipe schedule\"` is not empty\r\n3. Check server time zone vs. wipe time setting\r\n4. Review console for wipe-related messages\r\n5. Ensure plugin has write permissions to server directory\r\n\r\n### Players Can't Vote\r\n\r\n**Symptoms**: Players get \"No permission\" message\r\n\r\n**Solutions**:\r\n1. Check `\"Only players with permission can vote (true/false)\": false`\r\n2. If true, grant permission: `oxide.grant user <username> mapvoter.vote`\r\n3. Or grant to group: `oxide.grant group default mapvoter.vote`\r\n\r\n### Custom Map Not Loading\r\n\r\n**Symptoms**: Server wipes to procedural map instead of voted custom map\r\n\r\n**Solutions**:\r\n1. Verify custom map URL is valid and accessible\r\n2. Check `.map` file format is compatible with current Rust version\r\n3. Ensure file size is reasonable (< 100MB recommended)\r\n4. Check server console for download errors\r\n\r\n---\r\n\r\n## Support & Resources\r\n\r\n- **RustMaps.com**: https://rustmaps.com/\r\n- **Oxide Documentation**: https://umod.org/\r\n- **Discord Extension**: https://github.com/dassjosh/Oxide.Ext.Discord\r\n\r\n---\r\n\r\n## Changelog\r\n\r\n### Version 1.7.0 - UI Refactoring Update\r\n- ✨ **NEW**: Complete UI Theme System for full customization\r\n  - 13 customizable colors (Primary, Secondary, Success, Warning, Error, etc.)\r\n  - 5 spacing values (Tiny, Small, Medium, Large, ExtraLarge)\r\n  - 5 typography sizes (TinySize through TitleSize)\r\n  - 4 visual effects toggles (Shadows, Glow, Blur, Animations)\r\n- 🎨 Refactored all UI components to use theme system\r\n- 🎨 Added MVoterComponents library with 5 reusable components\r\n- 🎨 Implemented notification system with color-coded types\r\n- 🎨 Renamed UI constants to MVoter prefix to avoid plugin conflicts\r\n- 📝 Added comprehensive theme configuration documentation\r\n- ⚡ Improved UI code maintainability and consistency\r\n- 🐛 Fixed compilation errors in notification system\r\n\r\n### Version 2.0.0\r\n- ✨ Reorganized configuration structure\r\n- ✨ Added configuration versioning\r\n- ✨ Separated RustMaps settings from general options\r\n- ✨ Enhanced Discord settings with more options\r\n- ✨ Improved voting settings organization\r\n\r\n---\r\n\r\n**Last Updated**: October 6, 2025  \r\n**Author**: Kaysharp  \r\n**Plugin Version**: 1.7.0\r\n";
+        
+        try {
+            // Parse and render the markdown
+            const html = marked.parse(markdownContent);
+            document.getElementById('content').innerHTML = html;
+            
+            // Handle anchor navigation after content is loaded
+            function scrollToHash() {
+                if (window.location.hash) {
+                    const hash = window.location.hash.substring(1); // Remove the # symbol
+                    const element = document.getElementById(hash);
+                    if (element) {
+                        // Use requestAnimationFrame to ensure DOM is ready
+                        requestAnimationFrame(() => {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        });
+                    } else {
+                        console.warn('Element not found for hash:', hash);
+                    }
+                }
+            }
+            
+            // Scroll to hash after content is fully rendered
+            requestAnimationFrame(() => {
+                setTimeout(scrollToHash, 100);
+            });
+            
+            // Handle hash changes (when clicking navigation links)
+            window.addEventListener('hashchange', (e) => {
+                e.preventDefault();
+                scrollToHash();
+            });
+            
+            // Also handle direct clicks on anchor links within the page
+            document.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A' && e.target.hash) {
+                    e.preventDefault();
+                    window.location.hash = e.target.hash;
+                    scrollToHash();
+                }
+            });
+            
+            // Inject the wipe picker after markdown is rendered
+            setTimeout(injectWipePicker, 200);
+        } catch (error) {
+            document.getElementById('content').innerHTML = '<p style="color: red;">Error rendering markdown: ' + error.message + '</p>';
+            console.error('Markdown rendering error:', error);
+        }
+        
+        // Wipe Picker functionality
+        let selectedMapDays = [];
+        let selectedBPDays = [0]; // Day 0 (forced wipe) defaults to BP wipe
+        let currentMode = 'map'; // 'map' or 'bp'
+        
+        function injectWipePicker() {
+            const placeholder = document.getElementById('wipePickerPlaceholder');
+            if (!placeholder) return;
+            
+            placeholder.innerHTML = `
+                <div class="wipe-picker-container">
+                    <div class="picker-header">
+                        <div class="picker-title">🗓️ Select Your Wipe Days</div>
+                        <div class="preset-buttons">
+                            <button class="preset-btn" onclick="applyPreset('weekly')">Weekly</button>
+                            <button class="preset-btn" onclick="applyPreset('biweekly')">Bi-Weekly</button>
+                            <button class="preset-btn" onclick="applyPreset('monthly')">Monthly</button>
+                            <button class="preset-btn" onclick="clearSelection()">Clear</button>
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 16px 0; display: flex; gap: 12px; align-items: center;">
+                        <div style="font-weight: 600; color: #8b949e;">Select wipe type:</div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="preset-btn active" id="mapModeBtn" onclick="switchMode('map')" style="background: #238636; border-color: #2ea043;">🗺️ Map Wipe</button>
+                            <button class="preset-btn" id="bpModeBtn" onclick="switchMode('bp')">📘 BP Wipe</button>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-container" id="calendar"></div>
+                    
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: #238636; border-color: #2ea043;"></div>
+                            <span>🗺️ Map Wipe</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: #1f6feb; border-color: #58a6ff;"></div>
+                            <span>📘 BP Wipe</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: linear-gradient(135deg, #238636 0%, #238636 50%, #1f6feb 50%, #1f6feb 100%); border-color: #fbbf24; border-width: 3px;"></div>
+                            <span>Both Wipes</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box empty"></div>
+                            <span>Available Day</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; padding: 12px; background: #161b22; border-radius: 6px; border: 1px solid #30363d;">
+                        <span style="color: #58a6ff;">ℹ️ Note:</span> <span style="color: #8b949e;">Day 0 is the forced wipe (first Thursday). Click to toggle between Map and BP wipe.</span>
+                    </div>
+                    
+                    <div class="output-section">
+                        <div class="output-title">📋 Configuration Output</div>
+                        <div class="output-code" id="configOutput">Click on days to select your wipe schedule...</div>
+                    </div>
+                </div>
+            `;
+            
+            generateCalendar();
+        }
+        
+        function generateCalendar() {
+            const calendar = document.getElementById('calendar');
+            if (!calendar) return;
+            
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+            
+            const firstDay = 3;
+            const daysInMonth = 31;
+            
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'calendar-day empty';
+                calendar.appendChild(empty);
+            }
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                
+                const dayOfWeek = (firstDay + day - 1) % 7;
+                const isThursday = dayOfWeek === 4;
+                const isForcedWipe = day === 2;
+                
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = day;
+                
+                const dayLabel = document.createElement('div');
+                dayLabel.className = 'day-label';
+                if (isForcedWipe) {
+                    dayLabel.textContent = 'Day 0';
+                } else if (isThursday) {
+                    const daysAfterForced = day - 2;
+                    dayLabel.textContent = `Day ${daysAfterForced}`;
+                } else {
+                    dayLabel.textContent = days[dayOfWeek];
+                }
+                
+                dayElement.appendChild(dayNumber);
+                dayElement.appendChild(dayLabel);
+                
+                // Make all Thursdays clickable (including forced wipe day)
+                if (isThursday) {
+                    dayElement.onclick = () => toggleDay(day);
+                    dayElement.style.cursor = 'pointer';
+                }
+                
+                dayElement.setAttribute('data-day', day);
+                calendar.appendChild(dayElement);
+            }
+            
+            // Initial UI update to show Day 0 as BP wipe
+            updateUI();
+        }
+        
+        function toggleDay(day) {
+            const daysAfterForced = day - 2;
+            const currentArray = currentMode === 'map' ? selectedMapDays : selectedBPDays;
+            const index = currentArray.indexOf(daysAfterForced);
+            
+            if (index > -1) {
+                currentArray.splice(index, 1);
+            } else {
+                currentArray.push(daysAfterForced);
+            }
+            
+            currentArray.sort((a, b) => a - b);
+            updateUI();
+        }
+        
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Update button styles
+            const mapBtn = document.getElementById('mapModeBtn');
+            const bpBtn = document.getElementById('bpModeBtn');
+            
+            if (mode === 'map') {
+                mapBtn.style.background = '#238636';
+                mapBtn.style.borderColor = '#2ea043';
+                bpBtn.style.background = '#21262d';
+                bpBtn.style.borderColor = '#30363d';
+            } else {
+                bpBtn.style.background = '#1f6feb';
+                bpBtn.style.borderColor = '#58a6ff';
+                mapBtn.style.background = '#21262d';
+                mapBtn.style.borderColor = '#30363d';
+            }
+            
+            updateUI();
+        }
+        
+        function updateUI() {
+            // Update calendar to show both wipe types with different colors
+            document.querySelectorAll('.calendar-day[data-day]').forEach(dayEl => {
+                const day = parseInt(dayEl.getAttribute('data-day'));
+                const daysAfterForced = day - 2;
+                
+                const hasMapWipe = selectedMapDays.includes(daysAfterForced);
+                const hasBPWipe = selectedBPDays.includes(daysAfterForced);
+                
+                // Remove all selection classes
+                dayEl.classList.remove('selected-map', 'selected-bp', 'selected-both');
+                
+                // Apply appropriate class based on selection
+                if (hasMapWipe && hasBPWipe) {
+                    dayEl.classList.add('selected-both');
+                } else if (hasMapWipe) {
+                    dayEl.classList.add('selected-map');
+                } else if (hasBPWipe) {
+                    dayEl.classList.add('selected-bp');
+                }
+            });
+            
+            // Update output
+            const output = document.getElementById('configOutput');
+            const hasMapDays = selectedMapDays.length > 0;
+            const hasBPDays = selectedBPDays.length > 0;
+            
+            if (!hasMapDays && !hasBPDays) {
+                output.innerHTML = `<span style="color: #8b949e;">Currently editing: <strong style="color: ${currentMode === 'map' ? '#2ea043' : '#58a6ff'};">${currentMode === 'map' ? '🗺️ Map Wipe' : '📘 BP Wipe'}</strong></span><br><br>Click on Thursday dates to select your wipe schedule...`;
+            } else {
+                let outputText = '<strong>Configuration:</strong><br><br>';
+                
+                outputText += `<span style="color: ${hasMapDays ? '#2ea043' : '#8b949e'};">`;
+                if (hasMapDays) {
+                    outputText += `"Map Wipe schedule": [${selectedMapDays.join(', ')}]`;
+                } else {
+                    outputText += `"Map Wipe schedule": []  <span style="color: #8b949e;">// No map wipes</span>`;
+                }
+                outputText += '</span>';
+                
+                outputText += ',<br>';
+                
+                outputText += `<span style="color: ${hasBPDays ? '#58a6ff' : '#8b949e'};">`;
+                if (hasBPDays) {
+                    outputText += `"BP Wipe schedule": [${selectedBPDays.join(', ')}]`;
+                } else {
+                    outputText += `"BP Wipe schedule": [0]  <span style="color: #8b949e;">// Forced wipe only</span>`;
+                }
+                outputText += '</span>';
+                
+                outputText += '<br><br><span style="color: #8b949e;">Currently editing: <strong style="color: ' + (currentMode === 'map' ? '#2ea043' : '#58a6ff') + ';">' + (currentMode === 'map' ? '🗺️ Map Wipe' : '� BP Wipe') + '</strong></span>';
+                
+                outputText += '<br><span style="color: #58a6ff;">�💡 Tip:</span> ';
+                if (currentMode === 'map') {
+                    outputText += 'Green = Map wipes, Blue = BP wipes, Split = Both wipes on same day';
+                } else {
+                    outputText += 'Green = Map wipes, Blue = BP wipes, Split = Both wipes on same day';
+                }
+                
+                output.innerHTML = outputText;
+            }
+            
+            // Clear preset button active states
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                if (btn.id !== 'mapModeBtn' && btn.id !== 'bpModeBtn') {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        function applyPreset(preset) {
+            switch(preset) {
+                case 'weekly':
+                    if (currentMode === 'map') {
+                        selectedMapDays = [7, 14, 21, 28];
+                    } else {
+                        selectedBPDays = [0]; // BP wipe on forced wipe only
+                    }
+                    break;
+                case 'biweekly':
+                    if (currentMode === 'map') {
+                        selectedMapDays = [14, 28];
+                    } else {
+                        selectedBPDays = [0];
+                    }
+                    break;
+                case 'monthly':
+                    if (currentMode === 'map') {
+                        selectedMapDays = [];
+                    } else {
+                        selectedBPDays = [0];
+                    }
+                    break;
+            }
+            updateUI();
+            event.target.classList.add('active');
+        }
+        
+        function clearSelection() {
+            if (currentMode === 'map') {
+                selectedMapDays = [];
+            } else {
+                selectedBPDays = [];
+            }
+            updateUI();
+        }
+    </script>
+</body>
+</html>

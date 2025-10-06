@@ -1,0 +1,16 @@
+# GitHub Pages Configuration for MapVoter
+title: MapVoter Configuration Guide
+description: A comprehensive Rust server plugin for automated map voting, wipe scheduling, and Discord integration
+author: Kaysharp
+url: "https://kaysharp42.github.io"
+baseurl: "/MapVoter"
+
+# Build settings
+markdown: kramdown
+theme: null
+
+# Exclude from processing
+exclude:
+  - README.md
+  - .git
+  - .gitignore
