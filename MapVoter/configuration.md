@@ -70,6 +70,17 @@ Example override:
 
 See: [Wipe Scheduling](/docs/wipe-scheduling)
 
+## Map Approval Workflow
+The approval pipeline is now documented as part of the main docs set.
+
+Use the new page for:
+- `Map Auto Check` and `Map Manual Approval` settings
+- auto-fail / manual-review behavior
+- regeneration loop and timeout handling
+- `mapreview` role restrictions
+
+See: [Map Approval Workflow](./approval)
+
 ## Pending Migration
 Large detailed sections (RustMaps Settings, Discord Settings, Theme tables, scenarios) will be ported from the legacy HTML progressively.
 

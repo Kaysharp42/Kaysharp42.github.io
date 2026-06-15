@@ -19,3 +19,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Local planning notes (do not commit)
+todo.md
+learning.md

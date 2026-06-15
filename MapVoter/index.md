@@ -84,6 +84,7 @@ Use the sidebar navigation or these quick links:
 - **[Commands](./commands)** - In-game and Discord commands
 - **[Auto Wipe & Voting](./wipe-scheduling)** - Schedule patterns and logic
 - **[Discord Integration](./discord)** - Bot setup and configuration
+- **[Map Approval Workflow](./approval)** - Auto-check, manual review, regeneration, and permissions
 - **[Changelog](./changelog)** - Version history
 
 ---

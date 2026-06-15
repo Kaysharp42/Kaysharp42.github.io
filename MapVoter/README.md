@@ -10,6 +10,8 @@ A comprehensive Rust server plugin for automated map voting, wipe scheduling, an
 
 View the complete configuration guide: **[Config-Guide.html](Config-Guide.html)**
 
+See the new approval workflow guide: **[Map Approval Workflow](approval.md)**
+
 Or visit the live documentation: **[https://kaysharp42.github.io/MapVoter/Config-Guide.html](https://kaysharp42.github.io/MapVoter/Config-Guide.html)**
 
 ## ✨ Key Features

@@ -46,6 +46,18 @@ Empty array = public command.
 | Winning map announcement | `Winning Map Channel id` |
 | Logs (if enabled) | `Discord Logs Channel Id` |
 
+## Review Button Permissions
+The review buttons use the same role model as the vote commands. If you want to limit who can approve or reject generated maps, add `mapreview` under `CmdRoles`:
+
+```json
+"CmdRoles": {
+  "mapvote": ["Admin", "Moderator"],
+  "mapreview": ["Admin"]
+}
+```
+
+This is covered in more detail on the [Map Approval Workflow](./approval) page.
+
 ## Tips
 - Use `||@everyone||` to visually show role but suppress actual ping if desired
 - Threads keep chat clean during heavy voting
