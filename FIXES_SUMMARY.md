@@ -55,7 +55,7 @@ Home (/)
     ├── wipe-scheduling.md # Wipe logic
     ├── discord.md        # Discord setup
     ├── changelog.md      # Version history
-    ├── Config-Guide.html # Legacy full guide
+    ├── full-guide.md # Legacy full guide
     ├── index.html.old    # Archived redirect
     ├── README.md         # MapVoter readme
     └── _config.yml       # Legacy MapVoter config
@@ -90,7 +90,7 @@ Home (/)
    - https://kaysharp42.github.io/ (portal)
    - https://kaysharp42.github.io/MapVoter/ (MapVoter docs)
    - https://kaysharp42.github.io/MapVoter/installation (installation guide)
-   - https://kaysharp42.github.io/MapVoter/Config-Guide.html (legacy guide)
+   - https://kaysharp42.github.io/MapVoter/full-guide/ (legacy guide)
 
 4. **Local Preview (optional):**
    ```powershell

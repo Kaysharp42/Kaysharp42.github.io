@@ -17,7 +17,7 @@ Official documentation for the MapVoter Rust server plugin - automate map voting
 {: .fs-6 .fw-300 }
 
 [Purchase on Codefling](https://codefling.com/plugins/map-voter-and-auto-wipe-script){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[View Full Legacy Guide](./Config-Guide.html){: .btn .fs-5 .mb-4 .mb-md-0 }
+[Full Configuration Guide](./full-guide){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
@@ -99,6 +99,6 @@ Use the sidebar navigation or these quick links:
 
 ## Support
 
-Need detailed configuration examples? See the [Legacy Full Configuration Guide](./Config-Guide.html) for exhaustive tables and scenarios.
+Need detailed configuration examples? See the [Full Configuration Guide](./full-guide) for exhaustive tables and scenarios.
 
 Have questions or feedback? Contact via [Codefling](https://codefling.com/plugins/map-voter-and-auto-wipe-script).

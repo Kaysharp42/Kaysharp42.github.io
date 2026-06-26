@@ -71,4 +71,4 @@ This is covered in more detail on the [Map Approval Workflow](./approval) page.
 | Commands ignored | Prefix mismatch or role restriction |
 
 ---
-Full legacy details: [/MapVoter/Config-Guide.html#discord-settings](/MapVoter/Config-Guide.html#discord-settings)
+Full reference: [/MapVoter/full-guide/#discord-settings](/MapVoter/full-guide/#discord-settings)

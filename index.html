@@ -1,0 +1,136 @@
+---
+# Portfolio landing page. Liquid is enabled by this front matter; no layout
+# wrapper is applied (this file is a complete document).
+# Edit your identity in the <!-- IDENTITY --> block below.
+# Edit projects in _data/projects.yml.
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kaysharp — Rust server plugins</title>
+  <meta name="description" content="Oxide/uMod plugins that automate the tedious parts of running a Rust game server. Maker of MapVoter.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/portfolio.css' | relative_url }}">
+</head>
+<body>
+
+<a class="skip" href="#projects">Skip to projects</a>
+
+<header class="nav">
+  <a class="brand" href="{{ '/' | relative_url }}">
+    <span class="brand-mark">K</span>
+    <span class="brand-name">KAYSHARP</span>
+  </a>
+  <nav class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="{{ '/MapVoter/' | relative_url }}">Docs</a>
+    <a href="#about">About</a>
+    <a class="nav-status"><span class="dot"></span>online</a>
+  </nav>
+</header>
+
+<main>
+  <!-- IDENTITY: hero copy lives here -->
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Rust&nbsp;·&nbsp;Oxide/uMod plugins</p>
+      <h1>Plugins that run your<br><span class="accent">Rust server</span> on autopilot.</h1>
+      <p class="lead">
+        I build server-side tools that handle the tedious parts of running a Rust
+        community — map voting, wipe scheduling, Discord. You set it once; the
+        server keeps itself on schedule.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#projects">Browse projects</a>
+        <a class="btn btn-ghost" href="{{ '/MapVoter/' | relative_url }}">Read the docs</a>
+      </div>
+      <dl class="hero-stats">
+        <div><dt>Flagship</dt><dd>MapVoter</dd></div>
+        <div><dt>Platform</dt><dd>Oxide / uMod</dd></div>
+        <div><dt>Latest</dt><dd>v1.7.0</dd></div>
+      </dl>
+    </div>
+
+    <!-- SIGNATURE: faux server console showing MapVoter at work -->
+    <aside class="console" aria-hidden="true">
+      <div class="console-bar">
+        <span class="tl red"></span><span class="tl amber"></span><span class="tl green"></span>
+        <span class="console-title">kaysharp@rust-eu — mapvoter</span>
+      </div>
+      <div class="console-body">
+        <p class="ln"><span class="status-online"><span class="dot"></span>ONLINE</span> rust.eu-west · 142/200 players · wipe in <b>3d 14h</b></p>
+        <p class="ln dim">$ mapvoter --status</p>
+        <p class="ln">map vote open — closing in 06:12</p>
+        <div class="vote">
+          <div class="opt"><span class="opt-name">Procedural 4500</span><span class="opt-pct">48%</span></div>
+          <div class="bar"><i style="width:48%"></i></div>
+          <div class="opt"><span class="opt-name">Custom · Oilrig</span><span class="opt-pct">30%</span></div>
+          <div class="bar"><i style="width:30%"></i></div>
+          <div class="opt"><span class="opt-name">Barren 4000</span><span class="opt-pct">22%</span></div>
+          <div class="bar"><i style="width:22%"></i></div>
+        </div>
+        <p class="ln ok">auto-wipe scheduled · Thu 19:00</p>
+        <p class="ln ok">discord · results embed posted &check;</p>
+        <p class="ln cursor">$ <span class="caret"></span></p>
+      </div>
+    </aside>
+  </section>
+
+  <section id="projects" class="projects">
+    <div class="section-head">
+      <p class="eyebrow">/ projects</p>
+      <h2>What I ship</h2>
+    </div>
+    <div class="grid">
+      {% for p in site.data.projects %}
+      <article class="card{% if p.featured %} card-featured{% endif %}">
+        <div class="card-head">
+          {% if p.icon %}<img class="card-icon" src="{{ p.icon | relative_url }}" alt="{{ p.name }} icon" loading="lazy">{% endif %}
+          <div class="card-id">
+            <h3>{{ p.name }}</h3>
+            {% if p.status %}<p class="card-status"><span class="dot"></span>{{ p.status }}</p>{% endif %}
+          </div>
+        </div>
+        <p class="card-desc">{{ p.tagline }}</p>
+        {% if p.tags %}
+        <ul class="tags">{% for t in p.tags %}<li>{{ t }}</li>{% endfor %}</ul>
+        {% endif %}
+        <div class="card-links">
+          {% if p.docs %}<a class="lnk lnk-primary" href="{{ p.docs | relative_url }}">Documentation →</a>{% endif %}
+          {% for l in p.links %}<a class="lnk" href="{{ l.url | relative_url }}">{{ l.label }}</a>{% endfor %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="about-inner">
+      <p class="eyebrow">/ about</p>
+      <h2>Who's behind this</h2>
+      <p>
+        I'm <strong>Kaysharp</strong> — I write Oxide/uMod plugins in C# for Rust
+        game servers. My focus is automation that admins can trust: schedule it,
+        forget it, and let players steer the experience through voting. MapVoter is
+        the flagship; more tools are on the way.
+      </p>
+      <div class="contact">
+        <a class="btn btn-ghost" href="https://github.com/Kaysharp42">GitHub</a>
+        <a class="btn btn-ghost" href="https://codefling.com/plugins/map-voter-and-auto-wipe-script">Codefling</a>
+        <a class="btn btn-ghost" href="https://github.com/Kaysharp42/Kaysharp42.github.io">This site's source</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span class="brand-mark">K</span>
+  <p>© 2025 Kaysharp · Built with Jekyll &amp; just-the-docs</p>
+</footer>
+
+</body>
+</html>

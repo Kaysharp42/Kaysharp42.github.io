@@ -102,4 +102,4 @@ If `mapreview` is missing, all roles may click the buttons. If it exists with at
 
 - [Configuration](./configuration)
 - [Discord Integration](./discord)
-- [Legacy Full Guide](./Config-Guide.html)
+- [Full Configuration Guide](./full-guide)

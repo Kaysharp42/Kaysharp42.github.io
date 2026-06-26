@@ -45,7 +45,7 @@ oxide/config/MapVoter.json
 10. Auto Wipe
 11. Plugins Data Wipe
 
-(Full expanded configuration content coming soon – see legacy [full guide](/MapVoter/Config-Guide.html) for now.)
+(Full expanded configuration content coming soon – see [full guide](/MapVoter/full-guide/) for now.)
 
 ## UI Theme System
 Refer to legacy guide for full tables until migrated.
@@ -85,4 +85,4 @@ See: [Map Approval Workflow](./approval)
 Large detailed sections (RustMaps Settings, Discord Settings, Theme tables, scenarios) will be ported from the legacy HTML progressively.
 
 ---
-_Still missing something?_ View the full original guide: [/MapVoter/Config-Guide.html](/MapVoter/Config-Guide.html)
+_Still missing something?_ View the full configuration guide: [/MapVoter/full-guide/](/MapVoter/full-guide/)

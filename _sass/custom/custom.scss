@@ -1,0 +1,110 @@
+// Docs restyle — layered on just-the-docs (ember scheme). Imported last by the
+// theme, so these rules win on source order. Mirrors the portfolio identity.
+
+$ember:      #FF6A3D;
+$ember-2:    #FF8A4D;
+$ember-soft: rgba(255, 106, 61, .12);
+$panel:      #121823;
+$border:     #1F2836;
+$mutetext:   #8A96A8;
+
+// ---- typography ----------------------------------------------------------
+body {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+code, kbd, pre, samp, tt, .highlight {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+h1, h2, h3, h4, h5, h6,
+.text-alpha, .text-beta, .text-gamma, .text-delta {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  letter-spacing: -.005em;
+}
+// Brand wordmark in the sidebar gets the display face
+.site-title, .site-title.lh-tight {
+  font-family: "Chakra Petch", system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+// ---- nav: active page gets an ember marker ------------------------------
+.nav-list .nav-list-item .nav-list-link.active {
+  color: $ember-2;
+  font-weight: 600;
+}
+.nav-list .nav-list-item .nav-list-link:hover { color: #EAF0F7; }
+.site-header { border-bottom: 1px solid $border; }
+
+// ---- links ---------------------------------------------------------------
+.main-content a:not(.btn) {
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(255, 106, 61, .4);
+}
+.main-content a:not(.btn):hover { text-decoration-color: $ember; }
+
+// ---- buttons -------------------------------------------------------------
+.btn-primary {
+  box-shadow: 0 8px 22px -12px $ember;
+  font-weight: 600;
+}
+.btn-primary:hover { background-color: $ember-2; }
+
+// ---- code blocks: terminal panel ----------------------------------------
+.main-content {
+  pre.highlight, figure.highlight, div.highlight {
+    border: 1px solid $border;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px -24px #000;
+  }
+  pre.highlight { padding: 1rem 1.1rem; }
+  // inline code
+  code {
+    color: $ember-2;
+    background-color: rgba(255, 106, 61, .08);
+    border: 1px solid rgba(255, 106, 61, .14);
+    border-radius: 5px;
+    padding: .12em .4em;
+  }
+  // don't double-style code inside highlighted blocks
+  pre code, .highlight code {
+    color: inherit; background: none; border: 0; padding: 0;
+  }
+}
+
+// ---- blockquote callouts (used as Tip/Note in the guide) ----------------
+.main-content blockquote {
+  background: $ember-soft;
+  border-left: 3px solid $ember;
+  border-radius: 0 8px 8px 0;
+  padding: .85rem 1.1rem;
+  margin: 1.2rem 0;
+  color: #D4DBE6;
+}
+.main-content blockquote > :first-child { margin-top: 0; }
+.main-content blockquote > :last-child { margin-bottom: 0; }
+
+// ---- tables --------------------------------------------------------------
+.main-content table {
+  border: 1px solid $border;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.main-content table th {
+  background: $panel;
+  font-family: "IBM Plex Sans", sans-serif;
+  color: #EAF0F7;
+}
+.main-content table tr td { border-color: $border; }
+
+// ---- "Back to the portfolio" affordance in the sidebar ------------------
+.site-header .site-title::before {
+  content: "← ";
+  color: $mutetext;
+}
+
+// ---- search --------------------------------------------------------------
+.search-input { border-radius: 8px; }
+.search-result-highlight { color: $ember-2; }

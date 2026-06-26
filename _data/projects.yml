@@ -1,0 +1,31 @@
+# Projects shown on the portfolio landing page.
+# Add a new project = add an entry here + a docs folder (see README "Adding a project").
+# Order is top-to-bottom. Mark one `featured: true` to give it the large hero card.
+
+- name: MapVoter
+  status: "v1.7.0 · Active"
+  featured: true
+  icon: /assets/images/mapvoter-icon.jpg
+  tagline: >-
+    Player-driven map voting, hands-off wipe scheduling, and full Discord
+    integration for Rust game servers. Set the schedule once and let the
+    server run itself.
+  tags: [Rust, Oxide/uMod, "C#", Discord, RustMaps]
+  docs: /MapVoter/
+  links:
+    - label: Buy on Codefling
+      url: https://codefling.com/plugins/map-voter-and-auto-wipe-script
+    - label: Full guide
+      url: /MapVoter/full-guide/
+
+# Example template for the next project — uncomment and fill in:
+# - name: NextPlugin
+#   status: "v0.1.0 · In development"
+#   featured: false
+#   icon: /assets/images/nextplugin-icon.jpg
+#   tagline: One sentence on what it does and who it is for.
+#   tags: [Rust, "C#"]
+#   docs: /NextPlugin/
+#   links:
+#     - label: Source
+#       url: https://github.com/Kaysharp42/NextPlugin

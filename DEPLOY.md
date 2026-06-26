@@ -38,7 +38,7 @@ git push origin main
 - https://kaysharp42.github.io/MapVoter/changelog
 
 ### Legacy Guide (preserved)
-- https://kaysharp42.github.io/MapVoter/Config-Guide.html
+- https://kaysharp42.github.io/MapVoter/full-guide/
 
 ## Local Testing (Optional)
 

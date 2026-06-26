@@ -1,0 +1,21 @@
+// Ember — dark color scheme for the docs, mirroring the portfolio palette.
+// Mirrors the variable set that just-the-docs' built-in "dark" scheme overrides,
+// so coverage is complete; only the values differ.
+
+$body-background-color:      #0A0E14;
+$sidebar-color:              #0C111A;
+$border-color:               #1F2836;
+
+$body-text-color:            #C2CBD8;
+$body-heading-color:         #EAF0F7;
+$nav-child-link-color:       #9AA6B5;
+
+$link-color:                 #FF7A3D;
+$btn-primary-color:          #FF6A3D;
+$base-button-color:          #161D29;
+
+$code-background-color:      #0E141D;
+$table-background-color:     #0E141D;
+$search-background-color:    #0C111A;
+$search-result-preview-color:#8A96A8;
+$feedback-color:             #0C111A;

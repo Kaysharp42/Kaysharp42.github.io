@@ -1,16 +1,17 @@
-title: Project Documentation Hub
-description: Documentation portal for MapVoter and future projects
+title: Kaysharp
+description: Oxide/uMod plugins that automate running a Rust game server. Docs for MapVoter and more.
 url: "https://kaysharp42.github.io"
 baseurl: "" # remain root for multi-project hub
 
 # Theme (using Just the Docs via remote theme)
 remote_theme: just-the-docs/just-the-docs
-color_scheme: dark
+color_scheme: ember
 
 # Aux links (top right)
 aux_links:
+  ← Portfolio: /
   MapVoter on Codefling: https://codefling.com/plugins/map-voter-and-auto-wipe-script
-  Repository: https://github.com/Kaysharp42/Kaysharp42.github.io
+  GitHub: https://github.com/Kaysharp42
 
 # Navigation structure (order defined by nav_order front matter in pages)
 # Enable search
@@ -19,8 +20,14 @@ search_enabled: true
 # Footer
 footer_content: "&copy; 2025 Kaysharp. Documentation Hub."
 
-# Keep legacy HTML guide for backward-compatible links (old URLs under /MapVoter/)
-# Once search engines & external links updated, you can delete MapVoter/ folder.
+# Internal repo docs — keep in the repo, but off the public site/nav.
+exclude:
+  - DEPLOY.md
+  - FIXES_SUMMARY.md
+  - README.md
+  - MapVoter/README.md
+  - Gemfile
+  - vendor
 
 # Just the Docs configuration
 just_the_docs:

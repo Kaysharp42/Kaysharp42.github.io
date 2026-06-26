@@ -22,4 +22,4 @@ nav_order: 50
 - Better separation of RustMaps settings
 
 ---
-Older detailed changelog still in: [/MapVoter/Config-Guide.html#changelog](/MapVoter/Config-Guide.html#changelog)
+Full changelog in: [/MapVoter/full-guide/#changelog](/MapVoter/full-guide/#changelog)
